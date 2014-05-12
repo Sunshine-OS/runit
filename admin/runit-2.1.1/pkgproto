@@ -1,0 +1,22 @@
+i pkginfo
+d none sbin 0755 root wheel
+f none sbin/chpst 0555 root wheel
+f none sbin/sv 0555 root wheel
+f none sbin/init 0555 root wheel
+f none sbin/runsvdir 0555 root wheel
+f none sbin/svlogd 0555 root wheel
+f none sbin/runit 0555 root wheel
+f none sbin/runsvchdir 0555 root wheel
+f none sbin/runit-init 0555 root wheel
+f none sbin/utmpset 0555 root wheel
+f none sbin/runsv 0555 root wheel
+d none etc 0755 root wheel
+d none etc/runit 0755 root wheel
+f none etc/runit/3 0755 root wheel
+f none etc/runit/2 0755 root wheel
+f none etc/runit/ctrlaltdel 0755 root wheel
+f none etc/runit/1 0755 root wheel
+d none etc/sv 0755 root wheel
+d none etc/sv/getty-5 0755 root wheel
+f none etc/sv/getty-5/run 0755 root wheel
+f none etc/sv/getty-5/finish 0755 root wheel

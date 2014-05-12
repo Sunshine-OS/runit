@@ -1,0 +1,16 @@
+#!/bin/sh
+
+mkdir -p proto/sbin
+mkdir -p proto/etc/sv
+mkdir -p proto/etc/runit
+mkdir -p proto/etc/sv/getty-5
+mkdir -p /service
+
+cp command/* proto/sbin/
+cp proto/sbin/runit proto/sbin/init
+
+cp etc/freebsd/* proto/etc/runit/
+cp -r etc/freebsd/getty-ttyv4/* proto/etc/sv/getty-5/
+
+echo "### Generating package: ###"
+pkgmk -o -b `pwd`/proto/ -f pkgproto -d .
