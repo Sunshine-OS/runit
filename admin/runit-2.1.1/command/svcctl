@@ -1,0 +1,116 @@
+#!/bin/sh
+
+find_service()
+{
+	service=$1
+	svdir=/service
+
+	if [ "x$service" != "x" ]; then
+		if [ -L "$svdir/$service" ]; then
+		location=$(readlink -f "$svdir/$service")
+		fi
+	fi
+
+	if [ "x$location" != "x" ];then
+		echo $location
+	else
+		if [ -d "$svdir/../sv/$service" ];then
+			echo "$svdir/../sv/$service"
+		elif [ -d "$svdir/../Service/$service" ];then
+			echo "$svdir/../Service/$service"
+		elif [ -d "$svdir/../Services/$service" ];then
+			echo "$svdir/../Services/$service"
+		elif [ "$svdir" != "/etc/sv/$service" -a -d "/etc/sv/$service" ];then
+			echo "/etc/sv/$service"
+		else
+			echo "no such service: '$service'"
+			exit 1
+		fi
+	fi
+}
+
+getsvdir()
+{
+	if [ -z $SVDIR ]; then
+		#echo "using /service" >&2
+		if [ -d /service ]; then
+			svdir=/service
+		else
+			echo "No service directory found" 1>&2
+			exit 127
+		fi
+	else
+		#echo "using $SVDIR" >&2
+		if [ -d "$SVDIR" ]; then
+			svdir=$SVDIR
+		else
+			echo "No service directory found" 1>&2
+		  exit 127
+		fi
+	fi
+	echo $svdir
+}
+
+enable()
+{
+	service=$1
+	svdir=$(find_service $service)
+
+	if [ -z "$svdir" -o ! -d "$svdir" ]; then
+		echo "no such service: '$service'" >&2
+		exit 1
+	fi
+
+	ln_dir=$(getsvdir)
+	if [ -L "$ln_dir/$service" ];then
+		echo "Service already enabled:" >&2
+		echo " $(sv s $ln_dir/$service)" >&2
+		exit 1
+	fi
+
+	echo "Enabling $1" >&2
+
+	ln -s $svdir $ln_dir
+}
+
+disable()
+{
+	service=$1
+	ln_dir=$(getsvdir)
+
+	if [ ! -L "$ln_dir/$service" ];then
+		echo "service does not exist or is not enabled: '$service'" >&2
+		exit 1
+	fi
+
+	echo "Disabling $1" >&2
+
+	rm $ln_dir/$service
+}
+
+usage()
+{
+	echo "usage: svcctl {command} {service}"
+	echo -e "e.g.: svcctl enable cron\n"
+	echo -e "commands:\nenable\ndisable\nstart\nrestart\nstop\nfind"
+}
+
+command=$1
+parameter=$2
+
+case "$command" in
+	enable) enable $parameter;;
+
+	disable) disable $parameter;;
+
+	start) /sbin/sv u $(find_service $parameter);;
+
+	restart) /sbin/sv t $(find_service $parameter);;
+
+	stop) /sbin/sv d $(find_service $parameter);;
+
+	find|sv-find) find_service $parameter;;
+
+	*) usage;
+		break;;
+esac

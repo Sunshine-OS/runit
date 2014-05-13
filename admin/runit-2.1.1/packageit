@@ -2,6 +2,8 @@
 
 mkdir -p proto/sbin
 mkdir -p proto/usr/bin
+mkdir -p proto/usr/sbin
+mkdir -p proto/usr/share/man/man8
 mkdir -p proto/etc/sv
 mkdir -p proto/etc/sv/getty-1
 mkdir -p proto/etc/sv/getty-2
@@ -11,8 +13,11 @@ mkdir -p proto/etc/sv/cron
 mkdir -p proto/etc/runit
 mkdir -p proto/service
 
+cp man/* proto/usr/share/man/man8/
+
 cp command/* proto/sbin/
 mv proto/sbin/svcs proto/usr/bin/svcs
+mv proto/sbin/svcctl proto/usr/sbin/svcctl
 cp proto/sbin/runit proto/sbin/init
 
 cp etc/freebsd/* proto/etc/runit/
