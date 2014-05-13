@@ -1,0 +1,6 @@
+#!/bin/sh
+
+for i in /service/*
+do
+	/sbin/sv status $i
+done

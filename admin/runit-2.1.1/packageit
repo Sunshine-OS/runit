@@ -1,6 +1,7 @@
 #!/bin/sh
 
 mkdir -p proto/sbin
+mkdir -p proto/usr/bin
 mkdir -p proto/etc/sv
 mkdir -p proto/etc/sv/getty-1
 mkdir -p proto/etc/sv/getty-2
@@ -11,6 +12,7 @@ mkdir -p proto/etc/runit
 mkdir -p proto/service
 
 cp command/* proto/sbin/
+mv proto/sbin/svcs proto/usr/bin/svcs
 cp proto/sbin/runit proto/sbin/init
 
 cp etc/freebsd/* proto/etc/runit/
