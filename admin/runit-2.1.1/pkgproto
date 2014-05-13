@@ -17,6 +17,21 @@ f none etc/runit/2 0755 root wheel
 f none etc/runit/ctrlaltdel 0755 root wheel
 f none etc/runit/1 0755 root wheel
 d none etc/sv 0755 root wheel
-d none etc/sv/getty-5 0755 root wheel
-f none etc/sv/getty-5/run 0755 root wheel
-f none etc/sv/getty-5/finish 0755 root wheel
+d none etc/sv/getty-1 0755 root wheel
+f none etc/sv/getty-1/run 0755 root wheel
+f none etc/sv/getty-1/finish 0755 root wheel
+d none etc/sv/getty-2 0755 root wheel
+f none etc/sv/getty-2/run 0755 root wheel
+f none etc/sv/getty-2/finish 0755 root wheel
+d none etc/sv/getty-3 0755 root wheel
+f none etc/sv/getty-3/run 0755 root wheel
+f none etc/sv/getty-3/finish 0755 root wheel
+d none etc/sv/getty-4 0755 root wheel
+f none etc/sv/getty-4/run 0755 root wheel
+f none etc/sv/getty-4/finish 0755 root wheel
+d none service 0755 root wheel
+s none service/getty-3=/etc/sv/getty-3
+s none service/getty-4=/etc/sv/getty-4
+s none service/getty-2=/etc/sv/getty-2
+s none service/getty-1=/etc/sv/getty-1
+
