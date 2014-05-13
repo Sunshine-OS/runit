@@ -36,6 +36,11 @@ f none etc/runit/2 0755 root wheel
 f none etc/runit/ctrlaltdel 0755 root wheel
 f none etc/runit/1 0755 root wheel
 d none etc/sv 0755 root wheel
+d none etc/sv/amd 0755 root wheel
+f none etc/sv/amd/run 0755 root wheel
+f none etc/sv/amd/svc.conf 0644 root wheel
+d none etc/sv/cron 0755 root wheel
+f none etc/sv/cron/run 0755 root wheel
 d none etc/sv/getty-1 0755 root wheel
 f none etc/sv/getty-1/run 0755 root wheel
 f none etc/sv/getty-1/finish 0755 root wheel
@@ -48,11 +53,10 @@ f none etc/sv/getty-3/finish 0755 root wheel
 d none etc/sv/getty-4 0755 root wheel
 f none etc/sv/getty-4/run 0755 root wheel
 f none etc/sv/getty-4/finish 0755 root wheel
-d none etc/sv/cron 0755 root wheel
-f none etc/sv/cron/run 0755 root wheel
 d none service 0755 root wheel
+s none service/amd=/etc/sv/amd
+s none service/cron=/etc/sv/cron
 s none service/getty-3=/etc/sv/getty-3
 s none service/getty-4=/etc/sv/getty-4
 s none service/getty-2=/etc/sv/getty-2
 s none service/getty-1=/etc/sv/getty-1
-s none service/cron=/etc/sv/cron

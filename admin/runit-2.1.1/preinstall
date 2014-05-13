@@ -2,14 +2,26 @@
 
 DISABLE_CRON="cron_enable=\"NO\""
 
-#echo "checking if cron enabled in /etc/rc.conf..."
-#if grep "$DISABLE_CRON" /etc/rc.conf; then
-#	echo "cron disabled in /etc/rc.conf"
-#else
-#	echo "stopping cron service..."
-#	/etc/rc.d/cron stop
-#	echo "disabling cron in /etc/rc.conf..."
-#	echo $DISABLE_CRON >> /etc/rc.conf
-#fi
+echo "checking if cron enabled in /etc/rc.conf..."
+if grep "$DISABLE_CRON" /etc/rc.conf; then
+	echo "cron disabled in /etc/rc.conf"
+else
+	echo "stopping cron service..."
+	/etc/rc.d/cron stop
+	echo "disabling cron in /etc/rc.conf..."
+	echo $DISABLE_CRON >> /etc/rc.conf
+fi
+
+DISABLE_AMD="amd_enable=\"NO\""
+
+echo "checking if amd enabled in /etc/rc.conf..."
+if grep "$DISABLE_AMD" /etc/rc.conf; then
+	echo "amd disabled in /etc/rc.conf"
+else
+	echo "stopping cron service..."
+	/etc/rc.d/amd stop
+	echo "disabling amd in /etc/rc.conf..."
+	echo $DISABLE_AMD >> /etc/rc.conf
+fi
 
 exit 0

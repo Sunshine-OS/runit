@@ -1,0 +1,6 @@
+#!/bin/sh
+
+source svc.conf
+
+exec 2>&1
+exec /sbin/fghack /usr/sbin/amd $flags
