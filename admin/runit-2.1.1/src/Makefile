@@ -1,9 +1,12 @@
-IT=chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset
+IT=chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset fghack
 
 default: sysdeps $(IT)
 
 check: $(IT)
 	./check-local $(IT)
+
+fghack: load fghack.o unix.a byte.a
+	./load fghack unix.a byte.a -static
 
 runit: load runit.o unix.a byte.a
 	./load runit unix.a byte.a -static
@@ -44,6 +47,9 @@ svlogd: load svlogd.o pmatch.o fmt_ptime.o unix.a byte.a time.a socket.lib
 
 chpst: load chpst.o uidgid.o unix.a byte.a
 	./load chpst uidgid.o unix.a byte.a
+
+fghack.o: compile sysdeps fghack.c
+	./compile fghack.c
 
 runit.o: compile sysdeps runit.c
 	./compile runit.c
