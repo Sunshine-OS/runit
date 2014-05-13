@@ -6,6 +6,7 @@ mkdir -p proto/etc/sv/getty-1
 mkdir -p proto/etc/sv/getty-2
 mkdir -p proto/etc/sv/getty-3
 mkdir -p proto/etc/sv/getty-4
+mkdir -p proto/etc/sv/cron
 mkdir -p proto/etc/runit
 mkdir -p proto/service
 
@@ -17,11 +18,13 @@ cp -r etc/freebsd/getty-ttyv0/* proto/etc/sv/getty-1/
 cp -r etc/freebsd/getty-ttyv1/* proto/etc/sv/getty-2/
 cp -r etc/freebsd/getty-ttyv2/* proto/etc/sv/getty-3/
 cp -r etc/freebsd/getty-ttyv3/* proto/etc/sv/getty-4/
+cp -r etc/freebsd/cron/* proto/etc/sv/cron/
 
 ln -s /etc/sv/getty-1 proto/service/getty-1
 ln -s /etc/sv/getty-2 proto/service/getty-2
 ln -s /etc/sv/getty-3 proto/service/getty-3 
 ln -s /etc/sv/getty-4 proto/service/getty-4
+#ln -s /etc/sv/cron proto/service/cron
 
 echo "### Generating package: ###"
-pkgmk -o -b `pwd`/proto/ -f pkgproto -d .
+/usr/5bin/pkgmk -o -b `pwd`/proto/ -f pkgproto -d .

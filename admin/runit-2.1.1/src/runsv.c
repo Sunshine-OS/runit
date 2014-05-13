@@ -435,12 +435,12 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (mkdir("supervise", 0700) == -1) {
+  if (mkdir("supervise", 0755) == -1) {
     if ((r =readlink("supervise", buf, 256)) != -1) {
       if (r == 256)
         fatalx("unable to readlink ./supervise: ", "name too long");
       buf[r] =0;
-      mkdir(buf, 0700);
+      mkdir(buf, 0755);
     }
     else {
       if ((errno != ENOENT) && (errno != EINVAL))
@@ -452,7 +452,7 @@ int main(int argc, char **argv) {
   if (lock_exnb(svd[0].fdlock) == -1) fatal("unable to lock supervise/lock");
   coe(svd[0].fdlock);
   if (haslog) {
-    if (mkdir("log/supervise", 0700) == -1) {
+    if (mkdir("log/supervise", 0755) == -1) {
       if ((r =readlink("log/supervise", buf, 256)) != -1) {
         if (r == 256)
           fatalx("unable to readlink ./log/supervise: ", "name too long");
@@ -461,7 +461,7 @@ int main(int argc, char **argv) {
           fatal("unable to open current directory");
         if (chdir("./log") == -1)
           fatal("unable to change directory to ./log"); 
-        mkdir(buf, 0700);
+        mkdir(buf, 0755);
         if (fchdir(fd) == -1)
           fatal("unable to change back to service directory");
         close(fd);
@@ -478,7 +478,7 @@ int main(int argc, char **argv) {
     coe(svd[1].fdlock);
   }
 
-  fifo_make("supervise/control", 0600);
+  fifo_make("supervise/control", 0644);
   if (stat("supervise/control", &s) == -1)
     fatal("unable to stat supervise/control");
   if (!S_ISFIFO(s.st_mode))
@@ -491,7 +491,7 @@ int main(int argc, char **argv) {
   coe(svd[0].fdcontrolwrite);
   update_status(&svd[0]);
   if (haslog) {
-    fifo_make("log/supervise/control", 0600);
+    fifo_make("log/supervise/control", 0644);
     if (stat("supervise/control", &s) == -1)
       fatal("unable to stat log/supervise/control");
     if (!S_ISFIFO(s.st_mode))
@@ -504,12 +504,12 @@ int main(int argc, char **argv) {
     coe(svd[1].fdcontrolwrite);
     update_status(&svd[1]);
   }
-  fifo_make("supervise/ok",0600);
+  fifo_make("supervise/ok",0644);
   if ((fd =open_read("supervise/ok")) == -1)
     fatal("unable to read supervise/ok");
   coe(fd);
   if (haslog) {
-    fifo_make("log/supervise/ok",0600);
+    fifo_make("log/supervise/ok",0644);
     if ((fd =open_read("log/supervise/ok")) == -1)
       fatal("unable to read log/supervise/ok");
     coe(fd);
