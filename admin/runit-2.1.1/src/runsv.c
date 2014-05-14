@@ -307,7 +307,7 @@ void startservice(struct svdir *s) {
     sig_uncatch(sig_int);
     sig_unblock(sig_int);
 
-	setsid(); /* allows us to kill all children when we need to */
+    setsid(); /* allows us to kill all children when we need to */
 
     /* chainload runscript */
     execve(*run, run, environ);
@@ -548,11 +548,11 @@ int main(int argc, char **argv) {
 
     sig_unblock(sig_term);
     sig_unblock(sig_child);
-	sig_unblock(sig_int);
+    sig_unblock(sig_int);
     iopause(x, 2 +haslog, &deadline, &now);
     sig_block(sig_term);
     sig_block(sig_child);
-	sig_block(sig_int);
+    sig_block(sig_int);
 
     while (read(selfpipe[0], &ch, 1) == 1)
       ;
