@@ -504,12 +504,12 @@ int main(int argc, char **argv) {
     coe(svd[1].fdcontrolwrite);
     update_status(&svd[1]);
   }
-  fifo_make("supervise/ok",0644);
+  fifo_make("supervise/ok",0666);
   if ((fd =open_read("supervise/ok")) == -1)
     fatal("unable to read supervise/ok");
   coe(fd);
   if (haslog) {
-    fifo_make("log/supervise/ok",0644);
+    fifo_make("log/supervise/ok",0666);
     if ((fd =open_read("log/supervise/ok")) == -1)
       fatal("unable to read log/supervise/ok");
     coe(fd);
