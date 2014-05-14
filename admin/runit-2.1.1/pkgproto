@@ -41,6 +41,9 @@ f none etc/sv/amd/run 0755 root wheel
 f none etc/sv/amd/svc.conf 0644 root wheel
 d none etc/sv/cron 0755 root wheel
 f none etc/sv/cron/run 0755 root wheel
+f none etc/sv/cron/finish 0755 root wheel
+d none etc/sv/cron/control 0755 root wheel
+f none etc/sv/cron/control/d 0755 root wheel
 d none etc/sv/getty-1 0755 root wheel
 f none etc/sv/getty-1/run 0755 root wheel
 f none etc/sv/getty-1/finish 0755 root wheel
