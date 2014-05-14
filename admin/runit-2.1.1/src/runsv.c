@@ -304,6 +304,12 @@ void startservice(struct svdir *s) {
     sig_unblock(sig_child);
     sig_uncatch(sig_term);
     sig_unblock(sig_term);
+    sig_uncatch(sig_int);
+    sig_unblock(sig_int);
+
+	setsid(); /* allows us to kill all children when we need to */
+
+    /* chainload runscript */
     execve(*run, run, environ);
     if (s->islog)
       fatal2("unable to start log/", *run);
@@ -401,6 +407,8 @@ int main(int argc, char **argv) {
   sig_catch(sig_child, s_child);
   sig_block(sig_term);
   sig_catch(sig_term, s_term);
+
+  sig_catch(sig_int, s_term);
 
   if (chdir(dir) == -1) fatal("unable to change to directory");
   svd[0].pid =0;
@@ -540,9 +548,11 @@ int main(int argc, char **argv) {
 
     sig_unblock(sig_term);
     sig_unblock(sig_child);
+	sig_unblock(sig_int);
     iopause(x, 2 +haslog, &deadline, &now);
     sig_block(sig_term);
     sig_block(sig_child);
+	sig_block(sig_int);
 
     while (read(selfpipe[0], &ch, 1) == 1)
       ;
