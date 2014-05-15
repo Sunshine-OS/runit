@@ -336,6 +336,7 @@ void startservice(struct svdir *s) {
   }
   s->pid =p;
   pidchanged =1;
+  /* notify that we've started */
   s->ctrl =C_NOOP;
   update_status(s);
 }
@@ -584,6 +585,7 @@ int main(int argc, char **argv) {
       if (child == svd[0].pid) {
         svd[0].pid =0;
         pidchanged =1;
+        /* notify that we've stopped */
         svd[0].wstat =wstat;
         svd[0].ctrl &=~C_TERM;
         if (svd[0].state != S_FINISH)
