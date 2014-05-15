@@ -60,6 +60,14 @@ int pidchanged =1;
 int logpipe[2];
 char *dir;
 
+static int stat_exists(const char *path)
+{
+  struct stat st;
+  return stat(path,&st) == 0 ? 1 :
+    errno == error_noent ? 0 :
+    -1;
+}
+
 void usage () { strerr_die4x(1, "usage: ", progname, USAGE, "\n"); }
 
 void fatal(char *m) {
@@ -244,17 +252,21 @@ unsigned int custom(struct svdir *s, char c) {
   return(0);
 }
 void stopservice(struct svdir *s) {
+  int killpid = s->pid;
+  
+  if (stat_exists("no-setsid")==0) killpid = -killpid;
+
   if (s->pid && ! custom(s, 't')) {
-    kill(s->pid, SIGTERM);
+    kill(killpid, SIGTERM);
     s->ctrl |=C_TERM;
     update_status(s);
   }
   if (s->want == W_DOWN) {
-    kill(s->pid, SIGCONT);
+    kill(killpid, SIGCONT);
     custom(s, 'd'); return;
   }
   if (s->want == W_EXIT) {
-    kill(s->pid, SIGCONT);
+    kill(killpid, SIGCONT);
     custom(s, 'x');
   }
 }
@@ -264,6 +276,7 @@ void startservice(struct svdir *s) {
   char *run[4];
   char code[FMT_ULONG];
   char stat[FMT_ULONG];
+  int newsid =(stat_exists("no-setsid")==0);
 
   if (s->state == S_FINISH) {
     run[0] ="./finish";
@@ -307,7 +320,8 @@ void startservice(struct svdir *s) {
     sig_uncatch(sig_int);
     sig_unblock(sig_int);
 
-    setsid(); /* allows us to kill all children when we need to */
+    if(newsid) 
+      setsid(); /* allows us to kill all children when we need to */
 
     /* chainload runscript */
     execve(*run, run, environ);
@@ -326,6 +340,10 @@ void startservice(struct svdir *s) {
   update_status(s);
 }
 int ctrl(struct svdir *s, char c) {
+  int killpid = s->pid;
+
+  if (stat_exists("no-setsid")==0) killpid = -killpid;
+
   switch(c) {
   case 'd': /* down */
     s->want =W_DOWN;
@@ -347,16 +365,16 @@ int ctrl(struct svdir *s, char c) {
     if (s->state == S_RUN) stopservice(s);
     break;
   case 'k': /* sig kill */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGKILL);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGKILL);
     s->state =S_DOWN;
     break;
   case 'p': /* sig pause */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGSTOP);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGSTOP);
     s->ctrl |=C_PAUSE;
     update_status(s);
     break;
   case 'c': /* sig cont */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGCONT);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGCONT);
     if (s->ctrl & C_PAUSE) s->ctrl &=~C_PAUSE;
     update_status(s);
     break;
@@ -366,22 +384,22 @@ int ctrl(struct svdir *s, char c) {
     if (s->state == S_DOWN) startservice(s);
     break;
   case 'a': /* sig alarm */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGALRM);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGALRM);
     break;
   case 'h': /* sig hup */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGHUP);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGHUP);
     break;
   case 'i': /* sig int */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGINT);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGINT);
     break;
   case 'q': /* sig quit */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGQUIT);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGQUIT);
     break;
   case '1': /* sig usr1 */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGUSR1);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGUSR1);
     break;
   case '2': /* sig usr2 */
-    if ((s->state == S_RUN) && ! custom(s, c)) kill(s->pid, SIGUSR2);
+    if ((s->state == S_RUN) && ! custom(s, c)) kill(killpid, SIGUSR2);
     break;
   }
   return(1);
