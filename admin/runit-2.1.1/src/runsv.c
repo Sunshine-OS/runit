@@ -42,6 +42,7 @@ int selfpipe[2];
 
 struct svdir {
   int pid;
+  int oldpid;
   int state;
   int ctrl;
   int want;
@@ -276,6 +277,7 @@ void startservice(struct svdir *s) {
   char *run[4];
   char code[FMT_ULONG];
   char stat[FMT_ULONG];
+  char spid[FMT_ULONG];
   int newsid =(stat_exists("no-setsid")==0);
 
   if (s->state == S_FINISH) {
@@ -285,6 +287,8 @@ void startservice(struct svdir *s) {
     stat[fmt_ulong(stat, s->wstat & 0xff)] =0;
     run[2] =stat;
     run[3] =0;
+    spid[fmt_ulong(spid, (unsigned long)s->oldpid)] =0; /* old PID */
+	/* this should be wiped for safety afterwards */
   }
   else {
     run[0] ="./run";
@@ -583,6 +587,7 @@ int main(int argc, char **argv) {
       if (!child) break;
       if ((child == -1) && (errno != error_intr)) break;
       if (child == svd[0].pid) {
+        svd[0].oldpid =svd[0].pid;
         svd[0].pid =0;
         pidchanged =1;
         /* notify that we've stopped */
