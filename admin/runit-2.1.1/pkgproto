@@ -60,6 +60,7 @@ f none etc/sv/getty-4/finish 0755 root wheel
 
 d none etc/sv/rpcbind 0755 root wheel
 f none etc/sv/rpcbind/run 0755 root wheel
+f none etc/sv/rpcbind/finish 0755 root wheel
 d none etc/sv/rpcbind/log 0755 root wheel
 s none etc/sv/rpcbind/log/run=/sbin/rsvlog
 

@@ -1,80 +1,28 @@
 #!/bin/sh
 
-DISABLE_CRON="cron_enable=\"NO\""
+disable_in_rc_conf()
+{
+	name=$1
+	cmdname=$2
+	
+	disable="${name}_enable=\"NO\""
 
-echo "checking if cron enabled in /etc/rc.conf..."
-if grep "$DISABLE_CRON" /etc/rc.conf; then
-	echo "cron disabled in /etc/rc.conf"
-else
-	echo "stopping cron service..."
-	/etc/rc.d/cron stop
-	echo "disabling cron in /etc/rc.conf..."
-	echo $DISABLE_CRON >> /etc/rc.conf
-fi
+	echo "checking if $name enabled in /etc/rc.conf..."
+	if grep "$disable" /etc/rc.conf; then
+		echo "$name disabled in /etc/rc.conf"
+	else
+		echo "stopping $name service..."
+		/etc/rc.d/$cmdname stop
+		echo "disabling $name in /etc/rc.conf..."
+		echo $disable >> /etc/rc.conf
+	fi
+}
 
-
-DISABLE_AMD="amd_enable=\"NO\""
-
-echo "checking if amd enabled in /etc/rc.conf..."
-if grep "$DISABLE_AMD" /etc/rc.conf; then
-	echo "amd disabled in /etc/rc.conf"
-else
-	echo "stopping cron service..."
-	/etc/rc.d/amd stop
-	echo "disabling amd in /etc/rc.conf..."
-	echo $DISABLE_AMD >> /etc/rc.conf
-fi
-
-
-DISABLE_RPCBIND="rpcbind_enable=\"NO\""
-
-echo "checking if rpcbind enabled in /etc/rc.conf..."
-if grep "$DISABLE_RPCBIND" /etc/rc.conf; then
-	echo "rpcbind disabled in /etc/rc.conf"
-else
-	echo "stopping cron service..."
-	/etc/rc.d/rpcbind stop
-	echo "disabling rpcbind in /etc/rc.conf..."
-	echo $DISABLE_RPCBIND >> /etc/rc.conf
-fi
-
-
-DISABLE="rpc_statd_enable=\"NO\""
-
-echo "checking if statd enabled in /etc/rc.conf..."
-if grep "$DISABLE" /etc/rc.conf; then
-	echo "statd disabled in /etc/rc.conf"
-else
-	echo "stopping statd service..."
-	/etc/rc.d/statd stop
-	echo "disabling amd in /etc/rc.conf..."
-	echo $DISABLE >> /etc/rc.conf
-fi
-
-
-DISABLE="rpc_lockd_enable=\"NO\""
-
-echo "checking if lockd enabled in /etc/rc.conf..."
-if grep "$DISABLE" /etc/rc.conf; then
-	echo "lockd disabled in /etc/rc.conf"
-else
-	echo "stopping lockd service..."
-	/etc/rc.d/lockd stop
-	echo "disabling lockd in /etc/rc.conf..."
-	echo $DISABLE >> /etc/rc.conf
-fi
-
-DISABLE="nfs_client_enable=\"NO\""
-
-echo "checking if nfs_client enabled in /etc/rc.conf..."
-if grep "$DISABLE" /etc/rc.conf; then
-	echo "nfs_client disabled in /etc/rc.conf"
-else
-	echo "stopping nfs_client service..."
-	/etc/rc.d/nfsclient stop
-	echo "disabling nfs_client in /etc/rc.conf..."
-	echo $DISABLE >> /etc/rc.conf
-fi
-
+disable_in_rc_conf cron cron
+disable_in_rc_conf amd amd
+disable_in_rc_conf rpcbind rpcbind
+disable_in_rc_conf rpc_statd statd
+disable_in_rc_conf rpc_lockd lockd
+disable_in_rc_conf nfs_client nfsclient
 
 exit 0
