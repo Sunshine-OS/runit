@@ -44,6 +44,13 @@ The control interface (see below) can be used to start the service and to
 give other commands to
 .BR runsv .
 .P
+Unless the file
+.IR service /no-setsid
+exists,
+.B runsv
+will start the service in a new process group, and propagate signals to that
+group.
+.P
 If the directory
 .IR service /log
 exists,
