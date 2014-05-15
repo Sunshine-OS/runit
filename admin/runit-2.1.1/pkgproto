@@ -12,6 +12,7 @@ f none sbin/runsvchdir 0555 root wheel
 f none sbin/runit-init 0555 root wheel
 f none sbin/utmpset 0555 root wheel
 f none sbin/runsv 0555 root wheel
+f none sbin/rsvlog 0555 root wheel
 d none usr 0755 root wheel
 d none usr/bin 0755 root wheel
 f none usr/bin/svcs 0555 root wheel
@@ -56,6 +57,10 @@ f none etc/sv/getty-3/finish 0755 root wheel
 d none etc/sv/getty-4 0755 root wheel
 f none etc/sv/getty-4/run 0755 root wheel
 f none etc/sv/getty-4/finish 0755 root wheel
+d none etc/sv/rpcbind 0755 root wheel
+f none etc/sv/rpcbind/run 0755 root wheel
+d none etc/sv/rpcbind/log 0755 root wheel
+s none etc/sv/rpcbind/log/run=/sbin/rsvlog
 d none service 0755 root wheel
 s none service/amd=/etc/sv/amd
 s none service/cron=/etc/sv/cron

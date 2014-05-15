@@ -11,6 +11,7 @@ mkdir -p proto/etc/sv/getty-1
 mkdir -p proto/etc/sv/getty-2
 mkdir -p proto/etc/sv/getty-3
 mkdir -p proto/etc/sv/getty-4
+mkdir -p proto/etc/sv/rpcbind/log
 mkdir -p proto/etc/runit
 mkdir -p proto/service
 
@@ -28,6 +29,7 @@ cp -r etc/freebsd/getty-ttyv0/* proto/etc/sv/getty-1/
 cp -r etc/freebsd/getty-ttyv1/* proto/etc/sv/getty-2/
 cp -r etc/freebsd/getty-ttyv2/* proto/etc/sv/getty-3/
 cp -r etc/freebsd/getty-ttyv3/* proto/etc/sv/getty-4/
+cp -r etc/freebsd/rpcbind/* proto/etc/sv/rpcbind/
 
 ln -s /etc/sv/amd proto/service/amd
 ln -s /etc/sv/cron proto/service/cron
