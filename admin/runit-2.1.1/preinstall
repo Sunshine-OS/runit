@@ -24,5 +24,7 @@ disable_in_rc_conf rpcbind rpcbind
 disable_in_rc_conf rpc_statd statd
 disable_in_rc_conf rpc_lockd lockd
 disable_in_rc_conf nfs_client nfsclient
+disable_in_rc_conf ntpd ntpd
+disable_in_rc_conf sshd sshd
 
 exit 0
