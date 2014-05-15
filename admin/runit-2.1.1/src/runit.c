@@ -309,6 +309,12 @@ int main (int argc, const char * const *argv, char * const *envp) {
     reboot_system(RB_AUTOBOOT);
   }
   else {
+#ifdef RB_POWEROFF
+    strerr_warn2(INFO, "power off...", 0);
+    sync();
+    reboot_system(RB_POWEROFF);
+    sleep(2);
+#endif
 #ifdef RB_POWER_OFF
     strerr_warn2(INFO, "power off...", 0);
     sync();
