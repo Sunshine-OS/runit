@@ -1,8 +1,10 @@
 #!/bin/sh
 
+/sbin/sv start rpcbind || exit 1
+
 . ./svc.conf
 
 exec 2>&1
 exec 1>/dev/null
 
-exec /sbin/fghack /usr/sbin/amd $flags
+exec /usr/sbin/amd -N $flags
