@@ -19,16 +19,16 @@
 
 #define VERSION "$Id: d126cee39d1887d523c122ffb033d1ea098c9f24 $"
 
-#define FATAL   "fatal: "
-#define FAIL    "fail: "
+#define FATAL   "fatal:   "
+#define FAIL    "fail:    "
 #define WARN    "warning: "
-#define OK      "ok: "
-#define RUN     "running: "
-#define FINISH  "finishing: "
-#define DOWN    "down: "
+#define OK      "ok:      "
+#define RUN     "running  "
+#define FINISH  "finishing"
+#define DOWN    "down     "
 #define DONE    "completed"
 #define TIMEOUT "timeout: "
-#define KILL    "kill: "
+#define KILL    "kill:    "
 
 char *progname;
 char *action;
@@ -141,13 +141,15 @@ unsigned int svstatus_print(char *m) {
   case 3: outs(DONE); outs(" "); break;
   }
   if (pid && !normallyup) outs("(normally down)");
-  if (!pid && normallyup 
-       && (svstatus[19] != '3')) outs("(normally up)");
-  if (pid && svstatus[16]) outs("(paused)");
-  if (!pid && (svstatus[17] == 'u')) outs("(want up)");
-  if (pid && (svstatus[17] == 'd')) outs("(want down)");
-  if (pid && svstatus[18]) outs("(got TERM)");
-  outs("\t\t");
+  else if (!pid && normallyup 
+       && (svstatus[19] != '3')) outs("(normally up)\t");
+  else if (pid && svstatus[16]) outs("(paused)\t");
+  else if (!pid && (svstatus[17] == 'u')) outs("(want up)\t");
+  else if (pid && (svstatus[17] == 'd')) outs("(want down)\t");
+  else if (pid && svstatus[18]) outs("(got TERM)\t");
+  else outs("\t\t");
+
+  outs("\t");
 
   buffer_put(buffer_1, sulong,
     fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x -tstatus.x));
