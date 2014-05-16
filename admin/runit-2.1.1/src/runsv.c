@@ -31,6 +31,7 @@ int selfpipe[2];
 #define S_DOWN 0
 #define S_RUN 1
 #define S_FINISH 2
+#define S_DONE 3
 /* ctrl */
 #define C_NOOP 0
 #define C_TERM 1
@@ -39,6 +40,7 @@ int selfpipe[2];
 #define W_UP 0
 #define W_DOWN 1
 #define W_EXIT 2
+#define W_DONE 3
 
 struct svdir {
   int pid;
@@ -159,6 +161,9 @@ void update_status(struct svdir *s) {
   case S_FINISH:
     buffer_puts(&b, "finish");
     break;
+  case S_DONE:
+    buffer_puts(&b, "done");
+    break;
   }
   if (s->ctrl & C_PAUSE) buffer_puts(&b, ", paused");
   if (s->ctrl & C_TERM) buffer_puts(&b, ", got TERM");
@@ -169,6 +174,13 @@ void update_status(struct svdir *s) {
       break;
     case W_EXIT:
       buffer_puts(&b, ", want exit");
+      break;
+    }
+
+  if (s->state != S_DONE)
+    switch(s->want) {
+    case W_DONE:
+      buffer_puts(&b, ", want done");
       break;
     }
   buffer_puts(&b, "\n");
@@ -369,6 +381,9 @@ int ctrl(struct svdir *s, char c) {
     update_status(s);
     if (s->state == S_DOWN) { 
       s->firstrun =1; /* first run after manual stop */
+      startservice(s);
+    }
+    else if (s->state == S_DONE) {
       startservice(s);
     }
     break;
@@ -604,7 +619,7 @@ int main(int argc, char **argv) {
         svd[0].pid =0;
         svd[0].firstrun=0;
         pidchanged =1;
-        /* notify that we've stopped */
+        /* we've stopped */
         svd[0].wstat =wstat;
         svd[0].ctrl &=~C_TERM;
         if (svd[0].state != S_FINISH)
@@ -614,7 +629,20 @@ int main(int argc, char **argv) {
             update_status(&svd[0]);
             continue;
           }
-        svd[0].state =S_DOWN;
+
+        if (svd[0].state != S_DONE) {
+          if ((fd =open_read("oneshot")) != -1) {
+            close(fd);
+            svd[0].state =S_DONE;
+            svd[0].want =W_DONE;
+            update_status(&svd[0]);
+            continue;
+          }
+          else {
+            svd[0].state =S_DOWN;
+          }
+        }
+      
         taia_uint(&deadline, 1);
         taia_add(&deadline, &svd[0].start, &deadline);
         taia_now(&svd[0].start);
@@ -641,7 +669,8 @@ int main(int argc, char **argv) {
 
     if (sigterm) { ctrl(&svd[0], 'x'); sigterm =0; }
 
-    if ((svd[0].want == W_EXIT) && (svd[0].state == S_DOWN)) {
+    if ((svd[0].want == W_EXIT) && ((svd[0].state == S_DOWN) 
+         || (svd[0].state == S_DONE))) {
       if (svd[1].pid == 0) _exit(0);
       if (svd[1].want != W_EXIT) {
         svd[1].want =W_EXIT;

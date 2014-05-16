@@ -47,6 +47,13 @@ If
 cannot start ./run for some reason, the exit code is 111 and the status is 0.
 .P
 If the file
+.IR service /oneshot
+exists,
+.B runsv
+will only run ./run once and, after it finishes, will not attempt to
+restart it.
+.P
+If the file
 .IR service /down
 exists,
 .B runsv
