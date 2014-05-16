@@ -23,9 +23,10 @@
 #define FAIL    "fail: "
 #define WARN    "warning: "
 #define OK      "ok: "
-#define RUN     "run: "
-#define FINISH  "finish: "
+#define RUN     "running: "
+#define FINISH  "finishing: "
 #define DOWN    "down: "
+#define DONE    "completed"
 #define TIMEOUT "timeout: "
 #define KILL    "kill: "
 
@@ -123,30 +124,40 @@ unsigned int svstatus_print(char *m) {
     }
     normallyup =1;
   }
+  if (stat("oneshot", &s) == 0) 
+    normallyup =0;
+  
   pid =(unsigned char) svstatus[15];
   pid <<=8; pid +=(unsigned char)svstatus[14];
   pid <<=8; pid +=(unsigned char)svstatus[13];
   pid <<=8; pid +=(unsigned char)svstatus[12];
   tai_unpack(svstatus, &tstatus);
+  
   switch (svstatus[19]) {
-  case 0: outs(DOWN); break;
-  case 1: outs(RUN); break;
-  case 2: outs(FINISH); break;
+  
+  case 0: outs(DOWN); outs(" "); break;
+  case 1: outs(RUN); outs(" "); break;
+  case 2: outs(FINISH); outs(" "); break;
+  case 3: outs(DONE); outs(" "); break;
   }
-  outs(m); outs(": ");
-  if (svstatus[19]) {
+  if (pid && !normallyup) outs("(normally down)");
+  if (!pid && normallyup 
+       && (svstatus[19] != '3')) outs("(normally up)");
+  if (pid && svstatus[16]) outs("(paused)");
+  if (!pid && (svstatus[17] == 'u')) outs("(want up)");
+  if (pid && (svstatus[17] == 'd')) outs("(want down)");
+  if (pid && svstatus[18]) outs("(got TERM)");
+  outs("\t\t");
+
+  buffer_put(buffer_1, sulong,
+    fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x -tstatus.x));
+  outs("s\t\t");
+  outs(m); outs(" ");
+  if (svstatus[19] && pid != 0) {
     outs("(pid "); sulong[fmt_ulong(sulong, pid)] =0;
     outs(sulong); outs(") ");
   }
-  buffer_put(buffer_1, sulong,
-    fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x -tstatus.x));
-  outs("s");
-  if (pid && !normallyup) outs(", normally down");
-  if (!pid && normallyup) outs(", normally up");
-  if (pid && svstatus[16]) outs(", paused");
-  if (!pid && (svstatus[17] == 'u')) outs(", want up");
-  if (pid && (svstatus[17] == 'd')) outs(", want down");
-  if (pid && svstatus[18]) outs(", got TERM");
+
   return(pid ? 1 : 2);
 }
 int status(char *unused) {
@@ -157,14 +168,14 @@ int status(char *unused) {
   rc =svstatus_print(*service);
   if (chdir("log") == -1) {
     if (errno != error_noent) {
-      outs("; log: "); outs(WARN);
+      outs("\nlog: "); outs(WARN);
       outs("unable to change to log service directory: ");
       outs(error_str(errno));
     }
   }
   else
     if (svstatus_get()) {
-      outs("; "); svstatus_print("log");
+      outs("\n"); svstatus_print("log");
     }
   flush("\n");
   if (lsb) switch(rc) { case 1: done(0); case 2: done(3); case 0: done(4); }

@@ -460,6 +460,8 @@ int main(int argc, char **argv) {
 
   sig_catch(sig_int, s_term);
 
+  umask(0); /* this was interfering with setting permissions */
+
   if (chdir(dir) == -1) fatal("unable to change to directory");
   svd[0].pid =0;
   svd[0].state =S_DOWN;
