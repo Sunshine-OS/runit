@@ -622,6 +622,11 @@ int main(int argc, char **argv) {
         /* we've stopped */
         svd[0].wstat =wstat;
         svd[0].ctrl &=~C_TERM;
+
+        if ((wait_exitcode(svd[0].wstat) == 111) && svd[0].state == S_FINISH) {
+          svd[0].want =W_DOWN;
+          update_status(&svd[0]);
+        }
         if (svd[0].state != S_FINISH)
           if ((fd =open_read("finish")) != -1) {
             close(fd);

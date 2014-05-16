@@ -16,7 +16,7 @@ and starts ./run.
 If ./run exits and ./finish exists,
 .B runsv
 starts ./finish.
-If ./finish doesn't exist or ./finish exits,
+If ./finish doesn't exist or ./finish exits with any code other than 111,
 .B runsv
 restarts ./run.
 .P
