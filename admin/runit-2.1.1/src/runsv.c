@@ -43,6 +43,7 @@ int selfpipe[2];
 struct svdir {
   int pid;
   int oldpid;
+  int firstrun;
   int state;
   int ctrl;
   int want;
@@ -274,26 +275,34 @@ void stopservice(struct svdir *s) {
 
 void startservice(struct svdir *s) {
   int p;
-  char *run[4];
+  char *run[6];
   char code[FMT_ULONG];
   char stat[FMT_ULONG];
   char spid[FMT_ULONG];
+  char firstrun[FMT_ULONG];
+  char want[FMT_ULONG];
   int newsid =(stat_exists("no-setsid")==0);
+
+  if(s->firstrun != 0 && s->firstrun !=1) s->firstrun=1;
 
   if (s->state == S_FINISH) {
     run[0] ="./finish";
     code[fmt_ulong(code, wait_exitcode(s->wstat))] =0;
-    run[1] =wait_crashed(s->wstat) ? "-1" : code;
+    run[1] =wait_crashed(s->wstat) ? "-1" : code; /* first arg */
     stat[fmt_ulong(stat, s->wstat & 0xff)] =0;
     run[2] =stat;
-    run[3] =0;
     spid[fmt_ulong(spid, (unsigned long)s->oldpid)] =0; /* old PID */
-	/* this should be wiped for safety afterwards */
+    run[3] =spid;
+    spid[fmt_ulong(want, (unsigned long)s->want)] =0;
+    run[4] =want;
+    run[5] =0;
   }
   else {
     run[0] ="./run";
     custom(s, 'u');
-    run[1] =0;
+    firstrun[fmt_ulong(firstrun, (unsigned long)s->firstrun)] =0;
+    run[1] =firstrun;
+    run[2] =0;
   }
 
   if (s->pid != 0) stopservice(s); /* should never happen */
@@ -358,7 +367,10 @@ int ctrl(struct svdir *s, char c) {
   case 'u': /* up */
     s->want =W_UP;
     update_status(s);
-    if (s->state == S_DOWN) startservice(s);
+    if (s->state == S_DOWN) { 
+      s->firstrun =1; /* first run after manual stop */
+      startservice(s);
+    }
     break;
   case 'x': /* exit */
     if (s->islog) break;
@@ -439,6 +451,7 @@ int main(int argc, char **argv) {
   svd[0].ctrl =C_NOOP;
   svd[0].want =W_UP;
   svd[0].islog =0;
+  svd[0].firstrun =1;
   svd[1].pid =0;
   taia_now(&svd[0].start);
   if (stat("down", &s) != -1) svd[0].want =W_DOWN;
@@ -589,6 +602,7 @@ int main(int argc, char **argv) {
       if (child == svd[0].pid) {
         svd[0].oldpid =svd[0].pid;
         svd[0].pid =0;
+        svd[0].firstrun=0;
         pidchanged =1;
         /* notify that we've stopped */
         svd[0].wstat =wstat;

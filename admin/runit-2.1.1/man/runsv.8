@@ -24,13 +24,24 @@ If ./run or ./finish exit immediately,
 .B runsv
 waits a second before starting ./finish or restarting ./run.
 .P
-Two arguments are given to ./finish.
+Four arguments are given to ./finish.
 The first one is ./run's exit code, or -1 if ./run didn't exit normally.
 The second one is the least significant byte of the exit status as
 determined by
 .BR waitpid (2);
 for instance it is 0 if ./run exited normally, and the signal number
 if ./run was terminated by a signal.
+The third one was the PID of the service before it exited,
+and the fourth one is either 0, 1, or 2.
+0 means the service should be up, 1 means that the service has been stopped
+manually, and 2 means that runsv is exiting (likely to be system shutdown,
+or disabling of service).
+.P
+An argument is given to ./run. 
+If this is 1, it means this is the first start of the service, including cases
+where the service was stopped and then manually started again. If it is 0,
+this is a restart of the service. 
+.P
 If
 .B runsv
 cannot start ./run for some reason, the exit code is 111 and the status is 0.
