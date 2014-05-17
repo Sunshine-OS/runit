@@ -7,6 +7,6 @@ if [ -f ./svc.conf ]; then
 fi
 
 exec 2>&1
-# the -d option provides logs
-exec /sbin/fghack /usr/sbin/rpc.lockd -d 1 $flags
+# the -d option provides logs, -n disables fork
+exec /usr/sbin/rpc.lockd -n -d 1 $flags
 
