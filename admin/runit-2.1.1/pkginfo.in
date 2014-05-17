@@ -1,9 +1,9 @@
 PKG=SSOSrunit
-NAME=Runit init system
+NAME=Sunshine Runit init system
 DESC=A cross-platform Unix init scheme with service supervision, a replacement for sysvinit, and other init schemes. 
 VENDOR=The Sunshine OS Project
 HOTLINE=http://smarden.org/runit/index.html
-VERSION=2.1.1
+VERSION=2.1.1_%BUILD
 ARCH=x86_64
 CATEGORY=system
 BASEDIR=/
