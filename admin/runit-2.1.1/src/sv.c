@@ -19,16 +19,16 @@
 
 #define VERSION "$Id: d126cee39d1887d523c122ffb033d1ea098c9f24 $"
 
-#define FATAL   "fatal:   "
-#define FAIL    "fail:    "
-#define WARN    "warning: "
-#define OK      "ok:      "
+#define FATAL   "fatal:\n"
+#define FAIL    "fail:\n"
+#define WARN    "warning:\n"
+#define OK      "ok:\n"
 #define RUN     "running  "
 #define FINISH  "finishing"
 #define DOWN    "down     "
 #define DONE    "completed"
-#define TIMEOUT "timeout: "
-#define KILL    "kill:    "
+#define TIMEOUT "timeout:\n"
+#define KILL    "kill:\n"
 
 char *progname;
 char *action;

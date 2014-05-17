@@ -11,5 +11,5 @@ echo 'Shutdown...'
 if test -x /etc/runit/reboot; then
   exec reboot
 else
-  exec halt
+  exec halt -p
 fi
