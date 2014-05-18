@@ -15,6 +15,7 @@
 #include "wait.h"
 #include "open.h"
 #include "reboot_system.h"
+#include "version.h"
 
 /* #define DEBUG */
 
@@ -90,7 +91,7 @@ int main (int argc, const char * const *argv, char * const *envp) {
   if (RB_DISABLE_CAD == 0) reboot_system(0);
 #endif
 
-  strerr_warn3(INFO, "$Id: 25da3b86f7bed4038b8a039d2f8e8c9bbcf0822b $",
+  strerr_warn3(INFO, VERSCODE,
                ": booting.", 0);
 
   /* runit */
