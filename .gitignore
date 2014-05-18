@@ -1,0 +1,14 @@
+admin/runit-2.1.1/SSOSrunit/
+admin/runit-2.1.1/command/chpst
+admin/runit-2.1.1/command/fghack
+admin/runit-2.1.1/command/runit
+admin/runit-2.1.1/command/runit-init
+admin/runit-2.1.1/command/runsv
+admin/runit-2.1.1/command/runsvchdir
+admin/runit-2.1.1/command/runsvdir
+admin/runit-2.1.1/command/sv
+admin/runit-2.1.1/command/svlogd
+admin/runit-2.1.1/command/utmpset
+admin/runit-2.1.1/compile/
+admin/runit-2.1.1/pkginfo
+admin/runit-2.1.1/proto/
