@@ -1,5 +1,7 @@
 #!/bin/sh
 
+CHROOTDIR="${BASEDIR}"
+
 disable_in_rc_conf()
 {
 	name=$1
@@ -8,23 +10,25 @@ disable_in_rc_conf()
 	disable="${name}_enable=\"NO\""
 
 	echo "checking if $name enabled in /etc/rc.conf..."
-	if grep "$disable" /etc/rc.conf; then
+	if grep "$disable" ${BASEDIR}/etc/rc.conf; then
 		echo "$name disabled in /etc/rc.conf"
 	else
 		echo "stopping $name service..."
-		/etc/rc.d/$cmdname stop
+		${BASEDIR}/etc/rc.d/$cmdname stop
 		echo "disabling $name in /etc/rc.conf..."
-		echo $disable >> /etc/rc.conf
+		echo $disable >> ${BASEDIR}/etc/rc.conf
 	fi
 }
 
-disable_in_rc_conf cron cron
-disable_in_rc_conf amd amd
-disable_in_rc_conf rpcbind rpcbind
-disable_in_rc_conf rpc_statd statd
-disable_in_rc_conf rpc_lockd lockd
-disable_in_rc_conf nfs_client nfsclient
-disable_in_rc_conf ntpd ntpd
-disable_in_rc_conf sshd sshd
+if [ -f ${BASEDIR}/etc/rc.conf ]; then
+	disable_in_rc_conf cron cron
+	disable_in_rc_conf amd amd
+	disable_in_rc_conf rpcbind rpcbind
+	disable_in_rc_conf rpc_statd statd
+	disable_in_rc_conf rpc_lockd lockd
+	disable_in_rc_conf nfs_client nfsclient
+	disable_in_rc_conf ntpd ntpd
+	disable_in_rc_conf sshd sshd
+fi
 
 exit 0
