@@ -159,8 +159,8 @@ unsigned int svstatus_print(char *m) {
     outs("(pid "); sulong[fmt_ulong(sulong, pid)] =0;
     outs(sulong); outs(") ");
   }
-
-  outs("\n");
+  outs("");
+  //outs("\n");
 
   return(pid ? 1 : 2);
 }

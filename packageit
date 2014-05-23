@@ -6,7 +6,9 @@ mkdir -p proto/usr/sbin
 mkdir -p proto/usr/share/man/man8
 mkdir -p proto/etc/sv
 mkdir -p proto/etc/sv/amd
+mkdir -p proto/etc/sv/amd/log
 mkdir -p proto/etc/sv/cron
+mkdir -p proto/etc/sv/cron/log
 mkdir -p proto/etc/sv/getty-1
 mkdir -p proto/etc/sv/getty-2
 mkdir -p proto/etc/sv/getty-3

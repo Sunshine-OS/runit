@@ -1,6 +1,8 @@
 #!/bin/sh
 
-/sbin/sv start rpc.statd || exit 1
+/sbin/sv start rpc.statd >/dev/null|| exit 1
+
+sleep 0.2 #give rpc.statd a chance to get started properly
 
 if [ -f ./svc.conf ]; then
 	. ./svc.conf
