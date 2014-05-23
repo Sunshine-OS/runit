@@ -1,4 +1,0 @@
-#!/bin/sh
-
-kill `cat /var/run/cron.pid` && exit 0
-kill -9 `cat /var/run/cron.pid`
