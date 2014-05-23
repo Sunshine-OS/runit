@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo -e 'STATE\t\t\t\tUPTIME\t\tSERVICE'
+for i in /service/*
+do
+	/sbin/sv status $i
+done

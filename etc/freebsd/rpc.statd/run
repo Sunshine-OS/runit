@@ -1,0 +1,12 @@
+#!/bin/sh
+
+/sbin/sv start rpcbind || exit 1
+
+if [ -f ./svc.conf ]; then
+	. ./svc.conf
+fi
+
+exec 2>&1
+# the -d option provides logs, -n disables fork
+exec /sbin/fghack /usr/sbin/rpc.statd -n -d $flags
+
