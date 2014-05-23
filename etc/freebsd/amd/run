@@ -1,6 +1,6 @@
 #!/bin/sh
 
-/sbin/sv start rpcbind || exit 1
+/sbin/sv start rpcbind >/dev/null || exit 1
 
 . ./svc.conf
 
