@@ -44,6 +44,10 @@ f none etc/sv/amd/run 0755 root wheel
 f none etc/sv/amd/svc.conf 0644 root wheel
 d none etc/sv/amd/log 0755 root wheel
 s none etc/sv/amd/log/run=/sbin/rsvlog
+
+d none etc/sv/casperd 0755 root wheel
+f none etc/sv/casperd/run 0755 root wheel
+
 d none etc/sv/cron 0755 root wheel
 f none etc/sv/cron/run 0755 root wheel
 f none etc/sv/cron/finish 0755 root wheel
@@ -95,6 +99,12 @@ s none etc/sv/rpc.statd/log/run=/sbin/rsvlog
 
 d none etc/sv/ntpd 0755 root wheel
 f none etc/sv/ntpd/run 0755 root wheel
+
+d none etc/sv/powerd 0755 root wheel
+f none etc/sv/powerd/run 0755 root wheel   
+f none etc/sv/powerd/finish 0755 root wheel
+d none etc/sv/powerd/log 0755 root wheel 
+s none etc/sv/powerd/log/run=/sbin/rsvlog
 
 d none etc/sv/sshd 0755 root wheel
 f none etc/sv/sshd/run 0755 root wheel

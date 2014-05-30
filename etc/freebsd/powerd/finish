@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sysctl dev.cpu.0.freq=`sysctl -n dev.cpu.0.freq_levels |
+  sed -e 's:/.*::'` > /dev/null

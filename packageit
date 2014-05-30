@@ -18,6 +18,7 @@ cpsvcbundle ()
 }
 
 cpsvcbundle amd amd yes
+cpsvcbundle casperd casperd no
 cpsvcbundle cron cron yes
 cpsvcbundle dbus dbus yes
 cpsvcbundle getty-ttyv0 getty-1 no
@@ -29,6 +30,7 @@ cpsvcbundle rpc.statd rpc.statd yes
 cpsvcbundle rpc.lockd rpc.lockd yes
 cpsvcbundle rpcbind rpcbind yes
 cpsvcbundle ntpd ntpd no
+cpsvcbundle powerd powerd yes
 cpsvcbundle sshd sshd no
 
 mkdir -p proto/etc/runit
