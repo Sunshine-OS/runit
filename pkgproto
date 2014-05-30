@@ -4,7 +4,7 @@ d none sbin 0755 root wheel
 f none sbin/chpst 0555 root wheel
 f none sbin/fghack 0555 root wheel
 f none sbin/sv 0555 root wheel
-f none sbin/init 0555 root wheel
+f none sbin/telinit 0555 root wheel
 f none sbin/runsvdir 0555 root wheel
 f none sbin/svlogd 0555 root wheel
 f none sbin/runit 0555 root wheel
@@ -36,6 +36,7 @@ f none etc/runit/3 0755 root wheel
 f none etc/runit/2 0755 root wheel
 f none etc/runit/ctrlaltdel 0755 root wheel
 f none etc/runit/1 0755 root wheel
+
 d none etc/sv 0755 root wheel
 
 d none etc/sv/amd 0755 root wheel
@@ -43,7 +44,6 @@ f none etc/sv/amd/run 0755 root wheel
 f none etc/sv/amd/svc.conf 0644 root wheel
 d none etc/sv/amd/log 0755 root wheel
 s none etc/sv/amd/log/run=/sbin/rsvlog
-
 d none etc/sv/cron 0755 root wheel
 f none etc/sv/cron/run 0755 root wheel
 f none etc/sv/cron/finish 0755 root wheel
@@ -51,6 +51,9 @@ d none etc/sv/cron/control 0755 root wheel
 f none etc/sv/cron/control/d 0755 root wheel
 d none etc/sv/cron/log 0755 root wheel
 s none etc/sv/cron/log/run=/sbin/rsvlog
+
+d none etc/sv/dbus 0755 root wheel
+f none etc/sv/dbus/run 0755 root wheel
 
 d none etc/sv/getty-1 0755 root wheel
 f none etc/sv/getty-1/run 0755 root wheel
@@ -64,6 +67,9 @@ f none etc/sv/getty-3/finish 0755 root wheel
 d none etc/sv/getty-4 0755 root wheel
 f none etc/sv/getty-4/run 0755 root wheel
 f none etc/sv/getty-4/finish 0755 root wheel
+
+d none etc/sv/hald 0755 root wheel
+f none etc/sv/hald/run 0755 root wheel
 
 d none etc/sv/rpcbind 0755 root wheel
 f none etc/sv/rpcbind/run 0755 root wheel

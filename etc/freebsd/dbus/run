@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -f ./svc.conf ]; then
+	. ./svc.conf
+fi
+
+exec 2>&1
+
+exec chpst -u messagebus:messagebus /usr/local/bin/dbus-daemon --nofork $flags
