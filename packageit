@@ -15,6 +15,7 @@ mkdir -p proto/etc/sv/getty-2
 mkdir -p proto/etc/sv/getty-3
 mkdir -p proto/etc/sv/getty-4
 mkdir -p proto/etc/sv/hald
+mkdir -p proto/etc/sv/hald/log
 mkdir -p proto/etc/sv/rpc.statd/log
 mkdir -p proto/etc/sv/rpc.lockd/log
 mkdir -p proto/etc/sv/rpcbind/log

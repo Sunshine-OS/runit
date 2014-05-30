@@ -54,6 +54,7 @@ s none etc/sv/cron/log/run=/sbin/rsvlog
 
 d none etc/sv/dbus 0755 root wheel
 f none etc/sv/dbus/run 0755 root wheel
+f none etc/sv/dbus/svc.conf 0644 root wheel
 
 d none etc/sv/getty-1 0755 root wheel
 f none etc/sv/getty-1/run 0755 root wheel
@@ -70,6 +71,9 @@ f none etc/sv/getty-4/finish 0755 root wheel
 
 d none etc/sv/hald 0755 root wheel
 f none etc/sv/hald/run 0755 root wheel
+f none etc/sv/hald/svc.conf 0644 root wheel
+d none etc/sv/hald/log 0755 root wheel
+s none etc/sv/hald/log/run=/sbin/rsvlog
 
 d none etc/sv/rpcbind 0755 root wheel
 f none etc/sv/rpcbind/run 0755 root wheel

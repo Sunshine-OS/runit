@@ -6,4 +6,4 @@ fi
 
 exec 2>&1
 
-exec chpst -u haldaemon:haldaemon /usr/local/bin/hald --daemon=no $flags
+exec chpst /usr/local/sbin/hald --daemon=no $flags

@@ -6,4 +6,6 @@ fi
 
 exec 2>&1
 
-exec chpst -u messagebus:messagebus /usr/local/bin/dbus-daemon --nofork $flags
+chown messagebus:messagebus /var/run/dbus
+
+exec chpst -u messagebus /usr/local/bin/dbus-daemon --nofork $flags
