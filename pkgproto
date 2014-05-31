@@ -112,6 +112,14 @@ f none etc/sv/sshd/finish 0755 root wheel
 d none etc/sv/sshd/log 0755 root wheel
 s none etc/sv/sshd/log/run=/sbin/rsvlog
 
+d none etc/sv/sm.submit 0755 root wheel   
+f none etc/sv/sm.submit/run 0755 root wheel
+f none etc/sv/sm.submit/svc.conf 0644 root wheel
+
+d none etc/sv/sm.msp_queue 0755 root wheel   
+f none etc/sv/sm.msp_queue/run 0755 root wheel
+f none etc/sv/sm.msp_queue/svc.conf 0644 root wheel
+
 d none service 0755 root wheel
 s none service/amd=/etc/sv/amd
 s none service/cron=/etc/sv/cron
@@ -122,5 +130,7 @@ s none service/getty-1=/etc/sv/getty-1
 s none service/rpcbind=/etc/sv/rpcbind
 s none service/rpc.statd=/etc/sv/rpc.statd
 s none service/rpc.lockd=/etc/sv/rpc.lockd
+s none service/sm.submit=/etc/sv/sm.submit
+s none service/sm.msp_queue=/etc/sv/sm.msp_queue
 s none service/ntpd=/etc/sv/ntpd
 s none service/sshd=/etc/sv/sshd

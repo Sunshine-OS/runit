@@ -43,6 +43,8 @@ if [ -f ${BASEDIR}/etc/rc.conf ]; then
 	disable_in_rc_conf nfs_client nfsclient
 	disable_in_rc_conf ntpd ntpd
 	disable_in_rc_conf powerd powerd
+	disable_in_rc_conf sendmail_submit sendmail
+	disable_in_rc_conf sendmail_msp_queue sendmail
 	disable_in_rc_conf sshd sshd
 	disable_in_rc_conf dbus dbus
 	disable_in_rc_conf hald hald

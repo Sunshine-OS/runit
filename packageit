@@ -29,6 +29,8 @@ cpsvcbundle hald hald yes
 cpsvcbundle rpc.statd rpc.statd yes
 cpsvcbundle rpc.lockd rpc.lockd yes
 cpsvcbundle rpcbind rpcbind yes
+cpsvcbundle sm.submit sm.submit no
+cpsvcbundle sm.msp_queue sm.msp_queue no
 cpsvcbundle ntpd ntpd no
 cpsvcbundle powerd powerd yes
 cpsvcbundle sshd sshd no
