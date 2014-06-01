@@ -120,6 +120,10 @@ d none etc/sv/sm.mspqueue 0755 root wheel
 f none etc/sv/sm.mspqueue/run 0755 root wheel
 f none etc/sv/sm.mspqueue/svc.conf 0644 root wheel
 
+d none etc/sv/sm.outbound 0755 root wheel
+f none etc/sv/sm.outbound/run 0755 root wheel
+f none etc/sv/sm.outbound/svc.conf 0644 root wheel
+
 d none service 0755 root wheel
 s none service/amd=/etc/sv/amd
 s none service/cron=/etc/sv/cron
@@ -132,5 +136,6 @@ s none service/rpc.statd=/etc/sv/rpc.statd
 s none service/rpc.lockd=/etc/sv/rpc.lockd
 s none service/sm.submit=/etc/sv/sm.submit
 s none service/sm.mspqueue=/etc/sv/sm.mspqueue
+s none service/sm.outbound=/etc/sv/sm.outbound
 s none service/ntpd=/etc/sv/ntpd
 s none service/sshd=/etc/sv/sshd
