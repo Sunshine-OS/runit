@@ -2,6 +2,8 @@
 
 /sbin/sv start rpcbind >/dev/null || exit 1
 
+sleep 0.5 # give rpcbind a chance to start properly
+
 . ./svc.conf
 
 exec 2>&1
