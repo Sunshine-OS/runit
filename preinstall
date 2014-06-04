@@ -49,6 +49,7 @@ if [ -f ${BASEDIR}/etc/rc.conf ]; then
 	disable_in_rc_conf sshd sshd
 	disable_in_rc_conf dbus dbus
 	disable_in_rc_conf hald hald
+	disable_in_rc_conf moused moused
 fi
 
 if [ -f ${BASEDIR}/boot/loader.conf ]; then

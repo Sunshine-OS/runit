@@ -32,6 +32,7 @@ cpsvcbundle rpcbind rpcbind yes
 cpsvcbundle sm.submit sm.submit no
 cpsvcbundle sm.mspqueue sm.mspqueue no
 cpsvcbundle sm.outbound sm.outbound no
+cpsvcbundle moused moused yes
 cpsvcbundle ntpd ntpd no
 cpsvcbundle powerd powerd yes
 cpsvcbundle sshd sshd no
