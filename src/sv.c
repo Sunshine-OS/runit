@@ -1,6 +1,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <string.h>
 #include "str.h"
 #include "strerr.h"
 #include "error.h"
@@ -19,16 +20,16 @@
 
 #define VERSION "$Id: d126cee39d1887d523c122ffb033d1ea098c9f24 $"
 
-#define FATAL   "fatal:\n"
-#define FAIL    "fail:\n"
-#define WARN    "warning:\n"
-#define OK      "ok:\n"
-#define RUN     "running  "
-#define FINISH  "finishing"
-#define DOWN    "down     "
-#define DONE    "completed"
-#define TIMEOUT "timeout:\n"
-#define KILL    "kill:\n"
+#define FATAL   "fatal: "
+#define FAIL    "fail: "
+#define WARN    "warning: "
+#define OK      "ok: "
+#define RUN     "online\t\t"
+#define ONLINEWANTDOWN "online*\t\t"
+#define DOWN    "offline\t\t"
+#define OFFLINEWANTUP "offline*\t"
+#define TIMEOUT "timeout: "
+#define KILL    "kill: "
 
 char *progname;
 char *action;
@@ -124,43 +125,44 @@ unsigned int svstatus_print(char *m) {
     }
     normallyup =1;
   }
-  if (stat("oneshot", &s) == 0) 
-    normallyup =0;
-  
   pid =(unsigned char) svstatus[15];
   pid <<=8; pid +=(unsigned char)svstatus[14];
   pid <<=8; pid +=(unsigned char)svstatus[13];
   pid <<=8; pid +=(unsigned char)svstatus[12];
   tai_unpack(svstatus, &tstatus);
-  
-  switch (svstatus[19]) {
-  
-  case 0: outs(DOWN); outs(" "); break;
-  case 1: outs(RUN); outs(" "); break;
-  case 2: outs(FINISH); outs(" "); break;
-  case 3: outs(DONE); outs(" "); break;
-  }
-  if (pid && !normallyup) outs("(normally down)");
-  else if (!pid && normallyup 
-       && (svstatus[19] != '3')) outs("(normally up)\t");
-  else if (pid && svstatus[16]) outs("(paused)\t");
-  else if (!pid && (svstatus[17] == 'u')) outs("(want up)\t");
-  else if (pid && (svstatus[17] == 'd')) outs("(want down)\t");
-  else if (pid && svstatus[18]) outs("(got TERM)\t");
-  else outs("\t\t");
 
-  outs("\t");
+  /*'DONE' counts as online */
+
+  if ((svstatus[19] == 0) && (svstatus[17] == 'u'))
+    outs(OFFLINEWANTUP);
+
+  else if ((((svstatus[19] == 1)) 
+    && (svstatus[17] == 'd')) || (svstatus[19] == 2))
+    outs(ONLINEWANTDOWN);
+
+  else if ((svstatus[19] == 1) || (svstatus[19] == 3))
+    outs(RUN);
+
+  else if ((svstatus[19] == 0))
+	outs(DOWN);
 
   buffer_put(buffer_1, sulong,
     fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x -tstatus.x));
-  outs("s\t\t");
-  outs(m); outs(" ");
-  if (svstatus[19] && pid != 0) {
+  outs("s\t");
+  outs(m); outs(": ");
+
+  if (svstatus[19]) {
     outs("(pid "); sulong[fmt_ulong(sulong, pid)] =0;
     outs(sulong); outs(") ");
   }
-  outs("");
-  //outs("\n");
+
+
+  /*if (pid && !normallyup) outs(", normally down");
+  if (!pid && normallyup) outs(", normally up");*/
+  if (pid && svstatus[16]) outs(", paused");
+  /*if (!pid && (svstatus[17] == 'u')) outs(", want up");
+  if (pid && (svstatus[17] == 'd')) outs(", want down");*/
+  if (pid && svstatus[18]) outs(", got TERM");
 
   return(pid ? 1 : 2);
 }
@@ -172,14 +174,17 @@ int status(char *unused) {
   rc =svstatus_print(*service);
   if (chdir("log") == -1) {
     if (errno != error_noent) {
-      outs("\nlog: "); outs(WARN);
+      outs("\n log: "); outs(WARN);
       outs("unable to change to log service directory: ");
       outs(error_str(errno));
     }
   }
   else
     if (svstatus_get()) {
-      outs("\n"); svstatus_print("log");
+	  char svclog[1024];
+	  strcpy(svclog, *service);
+	  strcat(svclog, ":log");
+      outs("\n"); svstatus_print(svclog);
     }
   flush("\n");
   if (lsb) switch(rc) { case 1: done(0); case 2: done(3); case 0: done(4); }
