@@ -54,7 +54,7 @@ cpsvcbundle wpa_supplicant wpa_supplicant yes
 cpsvcbundle dhclient dhclient yes
 cpsvcbundle netif netif no
 
-cp etc/freebsd/rc.d/netif proto/etc/rc.d/netif
+#cp etc/freebsd/rc.d/netif proto/etc/rc.d/netif
 
 mv proto/etc/sv/wpa_supplicant proto/lib/svc/network
 mv proto/etc/sv/dhclient proto/lib/svc/network

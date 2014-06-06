@@ -173,8 +173,8 @@ f none etc/sv/netif/ctrl/d 0644 root wheel
 f none etc/sv/netif/run 0755 root wheel
 f none etc/sv/netif/netif.subr 0644 root wheel
 
-d none etc/rc.d 0755 root wheel
-f none etc/rc.d/netif 0755 root wheel
+#d none etc/rc.d 0755 root wheel
+#f none etc/rc.d/netif 0755 root wheel
 
 d none service 0755 root wheel
 s none service/amd=/etc/sv/amd
@@ -192,8 +192,8 @@ s none service/sm.outbound=/etc/sv/sm.outbound
 s none service/moused=/etc/sv/moused
 s none service/ntpd=/etc/sv/ntpd
 s none service/sshd=/etc/sv/sshd
-s none service/sysctl=/etc/sv/sysctl
-s none service/hostid=/etc/sv/hostid
-s none service/hostname=/etc/sv/hostname
-s none service/ldconfig=/etc/sv/ldconfig
-s none service/netif=/etc/sv/netif
+#s none service/sysctl=/etc/sv/sysctl
+#s none service/hostid=/etc/sv/hostid
+#s none service/hostname=/etc/sv/hostname
+#s none service/ldconfig=/etc/sv/ldconfig
+#s none service/netif=/etc/sv/netif
