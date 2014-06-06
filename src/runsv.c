@@ -285,6 +285,23 @@ void stopservice(struct svdir *s) {
   }
 }
 
+void stoponeshotservice(struct svdir *s) {
+  int killpid = s->pid;
+  
+  if (stat_exists("no-setsid")==0) killpid = -killpid;
+
+  if (s->pid) {
+    kill(killpid, SIGTERM);
+    s->ctrl |=C_TERM;
+  }
+
+  custom(s, 'd'); s->state =S_DOWN; update_status(s);
+  if (s->want == W_EXIT) {
+    custom(s, 'x'); return;
+  }
+}
+
+
 void startservice(struct svdir *s) {
   int p;
   char *run[6];
@@ -375,6 +392,7 @@ int ctrl(struct svdir *s, char c) {
     s->want =W_DOWN;
     update_status(s);
     if (s->state == S_RUN) stopservice(s);
+	if (s->state == S_DONE) stoponeshotservice(s);
     break;
   case 'u': /* up */
     s->want =W_UP;
@@ -392,6 +410,7 @@ int ctrl(struct svdir *s, char c) {
     s->want =W_EXIT;
     update_status(s);
     if (s->state == S_RUN) stopservice(s);
+    if (s->state == S_DONE) stoponeshotservice(s);
     break;
   case 't': /* sig term */
     if (s->state == S_RUN) stopservice(s);
