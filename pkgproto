@@ -36,6 +36,7 @@ f none etc/runit/3 0755 root wheel
 f none etc/runit/2 0755 root wheel
 f none etc/runit/ctrlaltdel 0755 root wheel
 f none etc/runit/1 0755 root wheel
+f none etc/network.subr 0644 root wheel
 
 d none etc/sv 0755 root wheel
 
@@ -128,6 +129,21 @@ f none etc/sv/sm.mspqueue/svc.conf 0644 root wheel
 d none etc/sv/sm.outbound 0755 root wheel
 f none etc/sv/sm.outbound/run 0755 root wheel
 f none etc/sv/sm.outbound/svc.conf 0644 root wheel
+
+d none lib 0755 root wheel
+d none lib/svc 0755 root wheel
+d none lib/svc/network 0755 root wheel
+d none lib/svc/network/wpa_supplicant 0755 root wheel
+f none lib/svc/network/wpa_supplicant/run 0755 root wheel
+f none lib/svc/network/wpa_supplicant/svc.conf 0644 root wheel
+d none lib/svc/network/wpa_supplicant/log 0755 root wheel
+s none lib/svc/network/wpa_supplicant/log/run=/sbin/rsvlog
+
+d none lib/svc/network/dhclient 0755 root wheel
+f none lib/svc/network/dhclient/run 0755 root wheel
+f none lib/svc/network/dhclient/svc.conf 0644 root wheel
+d none lib/svc/network/dhclient/log 0755 root wheel
+s none lib/svc/network/dhclient/log/run=/sbin/rsvlog
 
 d none service 0755 root wheel
 s none service/amd=/etc/sv/amd

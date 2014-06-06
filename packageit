@@ -1,9 +1,13 @@
 #!/bin/sh
 
+rm -rf proto
+
+mkdir -p proto/etc/sv
 mkdir -p proto/sbin
 mkdir -p proto/usr/bin
 mkdir -p proto/usr/sbin
 mkdir -p proto/usr/share/man/man8
+mkdir -p proto/lib/svc/network
 
 cpsvcbundle ()
 {
@@ -16,6 +20,8 @@ cpsvcbundle ()
 
 	cp -r etc/freebsd/$SVC/* proto/etc/sv/$NEWSVC/
 }
+
+cp etc/freebsd/network.subr proto/etc/
 
 cpsvcbundle amd amd yes
 cpsvcbundle casperd casperd no
@@ -36,6 +42,13 @@ cpsvcbundle moused moused yes
 cpsvcbundle ntpd ntpd no
 cpsvcbundle powerd powerd yes
 cpsvcbundle sshd sshd no
+
+
+cpsvcbundle wpa_supplicant wpa_supplicant yes
+cpsvcbundle dhclient dhclient yes
+
+mv proto/etc/sv/wpa_supplicant proto/lib/svc/network
+mv proto/etc/sv/dhclient proto/lib/svc/network
 
 mkdir -p proto/etc/runit
 mkdir -p proto/service
