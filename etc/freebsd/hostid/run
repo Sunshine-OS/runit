@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sv start sysctl || exit 1
+sv start sysctl
 
 hostid_set()
 {

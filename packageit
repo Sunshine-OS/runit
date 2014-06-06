@@ -3,6 +3,7 @@
 rm -rf proto
 
 mkdir -p proto/etc/sv
+mkdir -p proto/etc/rc.d
 mkdir -p proto/sbin
 mkdir -p proto/usr/bin
 mkdir -p proto/usr/sbin
@@ -51,6 +52,9 @@ cpsvcbundle legacy_rc legacy_rc yes
 
 cpsvcbundle wpa_supplicant wpa_supplicant yes
 cpsvcbundle dhclient dhclient yes
+cpsvcbundle netif netif no
+
+cp etc/freebsd/rc.d/netif proto/etc/rc.d/netif
 
 mv proto/etc/sv/wpa_supplicant proto/lib/svc/network
 mv proto/etc/sv/dhclient proto/lib/svc/network

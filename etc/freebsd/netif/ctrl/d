@@ -1,0 +1,30 @@
+#!/bin/sh
+
+. ./netif.subr
+. /etc/network.subr
+
+network_stop0()
+{
+	local _if
+
+	# Set the list of interfaces to work on.
+	#
+	cmdifn=$*
+
+	# Deconfigure the interface(s)
+	network_common ifn_stop $cmdifn
+
+	# Destroy cloned interfaces
+	if [ -n "$_clone_down" ]; then
+		clone_down $cmdifn
+	fi
+
+	if [ -f /etc/rc.d/routing -a -n "$cmdifn" ] ; then
+		for _if in $cmdifn; do
+			/etc/rc.d/routing stop any $_if
+		done
+	fi
+}
+
+_clone_down=1
+network_stop0 $*
