@@ -145,6 +145,26 @@ f none lib/svc/network/dhclient/svc.conf 0644 root wheel
 d none lib/svc/network/dhclient/log 0755 root wheel
 s none lib/svc/network/dhclient/log/run=/sbin/rsvlog
 
+d none etc/sv/sysctl 0755 root wheel
+f none etc/sv/sysctl/oneshot 0644 root wheel
+f none etc/sv/sysctl/run 0755 root wheel
+
+d none etc/sv/hostid 0755 root wheel
+f none etc/sv/hostid/run 0755 root wheel
+f none etc/sv/hostid/oneshot 0644 root wheel
+
+d none etc/sv/hostname 0755 root wheel
+f none etc/sv/hostname/oneshot 0644 root wheel
+f none etc/sv/hostname/run 0755 root wheel
+
+d none etc/sv/ldconfig 0755 root wheel
+f none etc/sv/ldconfig/run 0755 root wheel
+f none etc/sv/ldconfig/oneshot 0644 root wheel
+
+d none etc/sv/legacy_rc 0755 root wheel
+f none etc/sv/legacy_rc/run 0755 root wheel
+f none etc/sv/legacy_rc/oneshot 0644 root wheel
+
 d none service 0755 root wheel
 s none service/amd=/etc/sv/amd
 s none service/cron=/etc/sv/cron
@@ -161,3 +181,7 @@ s none service/sm.outbound=/etc/sv/sm.outbound
 s none service/moused=/etc/sv/moused
 s none service/ntpd=/etc/sv/ntpd
 s none service/sshd=/etc/sv/sshd
+s none service/sysctl=/etc/sv/sysctl
+s none service/hostid=/etc/sv/hostid
+s none service/hostname=/etc/sv/hostname
+s none service/ldconfig=/etc/sv/ldconfig

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for _f in /etc/sysctl.conf /etc/sysctl.conf.local; do
+	if [ -r ${_f} ]; then
+		/sbin/sysctl -i -f ${_f} > /dev/null
+	fi
+done

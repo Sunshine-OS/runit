@@ -43,6 +43,11 @@ cpsvcbundle ntpd ntpd no
 cpsvcbundle powerd powerd yes
 cpsvcbundle sshd sshd no
 
+cpsvcbundle hostid hostid no
+cpsvcbundle hostname hostname no
+cpsvcbundle ldconfig ldconfig no
+cpsvcbundle sysctl sysctl no
+cpsvcbundle legacy_rc legacy_rc yes
 
 cpsvcbundle wpa_supplicant wpa_supplicant yes
 cpsvcbundle dhclient dhclient yes

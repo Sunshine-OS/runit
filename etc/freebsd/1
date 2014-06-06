@@ -5,13 +5,21 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 trap : 2
 trap : 3
 
-/bin/sh /etc/rc autoboot
-if test $? -ne 0; then
-  # /etc/rc crashed, start emergency shell.
-  echo '/etc/rc failed. Press <enter> for emergency shell...'
-  read input
-  sh -p
-  exec reboot
-fi
+mount -t tmpfs -o rw -o mode=777 tmpfs /tmp
+mount -t procfs proc /proc
+zfs set readonly=off rpool/BOOTENV/sunshine
+zfs mount -a
+
+rm -f /service/wpa_supplicant* /service/dhclient*
+
+#/bin/sh /etc/rc autoboot
+#if test $? -ne 0; then
+#  # /etc/rc crashed, start emergency shell.
+#  echo '/etc/rc failed. Press <enter> for emergency shell...'
+#  read input
+#  sh -p
+#  exec reboot
+#fi
 touch /etc/runit/stopit
 chmod 0 /etc/runit/stopit
+sh -p
