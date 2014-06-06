@@ -490,7 +490,7 @@ int main(int argc, char **argv) {
   svd[0].firstrun =1;
   svd[1].pid =0;
   taia_now(&svd[0].start);
-  if (stat("down", &s) != -1) svd[0].want =W_DOWN;
+  if (stat("noauto", &s) != -1) svd[0].want =W_DOWN;
 
   if (stat("log", &s) == -1) {
     if (errno != error_noent)
