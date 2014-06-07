@@ -6,5 +6,6 @@ runsvchdir
 runsvdir
 sv
 svlogd
+svwaitdone
 utmpset
 fghack

@@ -4,6 +4,7 @@ d none sbin 0755 root wheel
 f none sbin/chpst 0555 root wheel
 f none sbin/fghack 0555 root wheel
 f none sbin/sv 0555 root wheel
+f none sbin/svwaitdone 0555 root wheel
 f none sbin/telinit 0555 root wheel
 f none sbin/runsvdir 0555 root wheel
 f none sbin/svlogd 0555 root wheel

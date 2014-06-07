@@ -1,4 +1,4 @@
-IT=chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset fghack
+IT=chpst runit runit-init runsv runsvchdir runsvdir sv svlogd utmpset fghack svwaitdone
 
 default: sysdeps $(IT)
 
@@ -31,6 +31,9 @@ sv: load sv.o unix.a byte.a time.a
 
 svwaitup: load svwaitup.o unix.a byte.a time.a
 	./load svwaitup unix.a byte.a time.a
+
+svwaitdone: load svwaitdone.o unix.a byte.a time.a
+	./load svwaitdone unix.a byte.a time.a
 
 svwaitdown: load svwaitdown.o unix.a byte.a time.a
 	./load svwaitdown unix.a byte.a time.a

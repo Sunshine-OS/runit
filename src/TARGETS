@@ -12,6 +12,8 @@ runsvctrl
 runsvctrl.o
 sv
 sv.o
+svwaitdone
+svwaitdone.o
 svwaitdown
 svwaitdown.o
 svwaitup
