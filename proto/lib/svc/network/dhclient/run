@@ -1,5 +1,0 @@
-#!/bin/sh
-
-. ./svc.conf
-
-exec /sbin/dhclient -d $ifn

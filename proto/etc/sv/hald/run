@@ -1,9 +1,0 @@
-#!/bin/sh
-
-if [ -f ./svc.conf ]; then
-	. ./svc.conf
-fi
-
-exec 2>&1
-
-exec chpst /usr/local/sbin/hald --daemon=no $flags

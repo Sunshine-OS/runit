@@ -15,6 +15,7 @@ SUBDIR=libbyte \
 
 preclean:
 	rm -rf SSOSrunit
+	rm -rf proto
 
 clean: preclean
 

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-moused -f -p /dev/psm0 -t auto

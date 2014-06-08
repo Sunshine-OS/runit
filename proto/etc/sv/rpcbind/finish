@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/bin/rm -f /var/run/rpcbind.*
