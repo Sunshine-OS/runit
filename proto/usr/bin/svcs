@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo -e 'STATE\t\tUPTIME\tSERVICE' > /tmp/output
+for i in /service/*
+do
+	/sbin/sv status $i >> /tmp/output
+done
+cat /tmp/output | column -t
+rm -f /tmp/output

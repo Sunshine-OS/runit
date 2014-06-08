@@ -1,0 +1,23 @@
+#!/bin/sh
+
+. ./svc.conf
+. /etc/network.subr
+
+is_ndis_interface()
+{
+        case `sysctl -n net.wlan.${1#wlan}.%parent 2>/dev/null` in
+                ndis*) true ;;
+                *) false ;;
+        esac
+}
+
+if is_wired_interface ${ifn} ; then
+        driver="wired"
+elif is_ndis_interface ${ifn} ; then
+        driver="ndis"
+else  
+        driver="bsd"
+fi
+
+
+exec /usr/sbin/wpa_supplicant -i $ifn -c /etc/wpa_supplicant.conf -D $driver

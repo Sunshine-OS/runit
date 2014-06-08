@@ -1,0 +1,5 @@
+#!/bin/sh
+. ./svc.conf
+
+exec 2>&1
+exec /usr/sbin/sendmail -L sm-mta -bD -q30m -ODaemonPortOptions=Addr=localhost $flags

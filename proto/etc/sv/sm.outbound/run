@@ -1,0 +1,5 @@
+#!/bin/sh
+. ./svc.conf
+
+exec 2>&1
+exec /usr/sbin/sendmail -L sm-queue -q30m -d99.100 $flags
