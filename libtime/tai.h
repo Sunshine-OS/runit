@@ -5,8 +5,9 @@
 
 #include "uint64.h"
 
-struct tai {
-  uint64 x;
+struct tai
+{
+    uint64 x;
 } ;
 
 #define tai_unix(t,u) ((void) ((t)->x = 4611686018427387914ULL + (uint64) (u)))

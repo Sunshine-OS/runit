@@ -1,6 +1,4 @@
 #!/bin/sh
 
-cp -r distrib/* proto/
-
 echo "### Generating package: ###"
 /usr/5bin/pkgmk -o -b `pwd`/proto/ -f pkgproto -d .

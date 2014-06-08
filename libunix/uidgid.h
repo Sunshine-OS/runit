@@ -3,10 +3,11 @@
 
 #include <sys/types.h>
 
-struct uidgid {
-  uid_t uid;
-  gid_t gid[61];
-  int gids;
+struct uidgid
+{
+    uid_t uid;
+    gid_t gid[61];
+    int gids;
 };
 
 /* user */

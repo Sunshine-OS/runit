@@ -6,7 +6,7 @@
 
 void taia_uint(struct taia *t,unsigned int s)
 {
-  t->sec.x = s;
-  t->nano = 0;
-  t->atto = 0;
+    t->sec.x = s;
+    t->nano = 0;
+    t->atto = 0;
 }

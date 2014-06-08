@@ -19,10 +19,9 @@ preclean:
 
 clean: preclean
 
-preinstall:
-	mkdir -p ${DESTDIR}/usr/share/man/man8
-
 package: all
+	cp -r distrib/* proto/
+	mkdir -p proto/usr/share/man/man8
 	fakeroot make install DESTDIR=${PWD}/proto
 	sh packageit
 
