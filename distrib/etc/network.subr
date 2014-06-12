@@ -35,10 +35,10 @@ GenIFSpecificSvc()
 	local _if=$2
 
 	nsvc=$svc.$_if
-	rm -rf /service/$svc.*
+	#rm -rf /service/$svc.*
 
-	cp -r /lib/svc/network/$svc /service/$nsvc
-	echo "ifn=${_if}" >> /service/$nsvc/svc.conf
+	cp -r /lib/svc/network/$svc /run/svc/sysinit/$nsvc
+	echo "ifn=${_if}" >> /run/svc/sysinit/$nsvc/svc.conf
 }
 
 #

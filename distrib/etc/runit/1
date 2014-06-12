@@ -11,6 +11,7 @@ mount -uw /
 zfs mount -a
 mkdir -p /run
 mount -t tmpfs -o rw -o mode=777 tmpfs /run
+mkdir -p /run/svc/sysinit
 
 rm -rf /service/wpa_supplicant* /service/dhclient*
 
