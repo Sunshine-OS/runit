@@ -23,11 +23,12 @@
 #define WARNING "- runit: warning: "
 #define FATAL "- runit: fatal: "
 
-const char * const stage[3] =
+const char * const stage[4] =
 {
     "/etc/runit/1",
     "/etc/runit/2",
-    "/etc/runit/3"
+    "/etc/runit/3",
+    "/etc/runit/4"
 };
 
 int selfpipe[2];
@@ -54,7 +55,7 @@ int main (int argc, const char * const *argv, char * const *envp)
     const char * prog[2];
     int pid, pid2;
     int wstat;
-    int st;
+    int curstage;
     iopause_fd x;
 #ifndef IOPAUSE_POLL
     fd_set rfds;
@@ -107,23 +108,23 @@ int main (int argc, const char * const *argv, char * const *envp)
                  ": booting.", 0);
 
     /* runit */
-    for (st =0; st < 3; st++)
+    for (curstage =0; curstage < 4; curstage++)
     {
-        /* if (st == 2) logwtmp("~", "reboot", ""); */
+        /* if (curstage == 3) logwtmp("~", "reboot", ""); */
         while ((pid =fork()) == -1)
         {
-            strerr_warn4(FATAL, "unable to fork for \"", stage[st], "\" pausing: ",
+            strerr_warn4(FATAL, "unable to fork for \"", stage[curstage], "\" pausing: ",
                          &strerr_sys);
             sleep(5);
         }
         if (!pid)
         {
             /* child */
-            prog[0] =stage[st];
+            prog[0] =stage[curstage];
             prog[1] =0;
 
             /* stage 1 gets full control of console */
-            if (st == 0)
+            if (curstage == 0)
             {
                 if ((ttyfd =open("/dev/console", O_RDWR)) != -1)
                 {
@@ -150,9 +151,9 @@ int main (int argc, const char * const *argv, char * const *envp)
             sig_unblock(sig_pipe);
             sig_unblock(sig_term);
 
-            strerr_warn3(INFO, "enter stage: ", stage[st], 0);
+            strerr_warn3(INFO, "enter stage: ", stage[curstage], 0);
             execve(*prog, (char *const *)prog, envp);
-            strerr_die4sys(0, FATAL, "unable to start child: ", stage[st], ": ");
+            strerr_die4sys(0, FATAL, "unable to start child: ", stage[curstage], ": ");
         }
 
         x.fd =selfpipe[0];
@@ -198,31 +199,31 @@ int main (int argc, const char * const *argv, char * const *envp)
                 if (wait_exitcode(wstat) != 0)
                 {
                     if (wait_crashed(wstat))
-                        strerr_warn3(WARNING, "child crashed: ", stage[st], 0);
+                        strerr_warn3(WARNING, "child crashed: ", stage[curstage], 0);
                     else
-                        strerr_warn3(WARNING, "child failed: ", stage[st], 0);
-                    if (st == 0)
+                        strerr_warn3(WARNING, "child failed: ", stage[curstage], 0);
+                    if (curstage == 0)
                         /* this is stage 1 */
                         if (wait_crashed(wstat) || (wait_exitcode(wstat) == 100))
                         {
-                            strerr_warn3(INFO, "leave stage: ", stage[st], 0);
+                            strerr_warn3(INFO, "leave stage: ", stage[curstage], 0);
                             strerr_warn2(WARNING, "skipping stage 2...", 0);
-                            st++;
+                            curstage++;
                             break;
                         }
-                    if (st == 1)
-                        /* this is stage 2 */
+                    if (curstage == 2)
+                        /* this is stage 3 */
                         if (wait_crashed(wstat) || (wait_exitcode(wstat) == 111))
                         {
-                            strerr_warn2(WARNING, "killing all processes in stage 2...", 0);
+                            strerr_warn2(WARNING, "killing all processes in stage 3...", 0);
                             kill(-pid, 9);
                             sleep(5);
                             strerr_warn2(WARNING, "restarting.", 0);
-                            st--;
+                            curstage--;
                             break;
                         }
                 }
-                strerr_warn3(INFO, "leave stage: ", stage[st], 0);
+                strerr_warn3(INFO, "leave stage: ", stage[curstage], 0);
                 break;
             }
             if (child != 0)
@@ -240,9 +241,9 @@ int main (int argc, const char * const *argv, char * const *envp)
 #endif
                 continue;
             }
-            if (st != 1)
+            if (curstage != 2)
             {
-                strerr_warn2(WARNING, "signals only work in stage 2.", 0);
+                strerr_warn2(WARNING, "signals only work in stage 3.", 0);
                 sigc =sigi =0;
                 continue;
             }
@@ -278,7 +279,7 @@ int main (int argc, const char * const *argv, char * const *envp)
                 /* unlink(STOPIT); */
                 chmod(STOPIT, 0);
 
-                /* kill stage 2 */
+                /* kill stage 3 */
 #ifdef DEBUG
                 strerr_warn2(WARNING, "sending sigterm...", 0);
 #endif
@@ -289,7 +290,7 @@ int main (int argc, const char * const *argv, char * const *envp)
                     if ((child =wait_nohang(&wstat)) == pid)
                     {
 #ifdef DEBUG
-                        strerr_warn2(WARNING, "stage 2 terminated.", 0);
+                        strerr_warn2(WARNING, "stage 3 terminated.", 0);
 #endif
                         pid =0;
                         break;
@@ -307,15 +308,15 @@ int main (int argc, const char * const *argv, char * const *envp)
                 {
                     /* still there */
                     strerr_warn2(WARNING,
-                                 "stage 2 not terminated, sending sigkill...", 0);
+                                 "stage 3 not terminated, sending sigkill...", 0);
                     kill(pid, 9);
                     if (wait_pid(&wstat, pid) == -1)
                         strerr_warn2(WARNING, "wait_pid: ", &strerr_sys);
                 }
                 sigc =0;
-                strerr_warn3(INFO, "leave stage: ", stage[st], 0);
+                strerr_warn3(INFO, "leave stage: ", stage[curstage], 0);
 
-                /* enter stage 3 */
+                /* enter stage 4 */
                 break;
             }
             sigc =sigi =0;
@@ -333,7 +334,7 @@ int main (int argc, const char * const *argv, char * const *envp)
     }
 
 #ifdef RB_AUTOBOOT
-    /* fallthrough stage 3 */
+    /* fallthrough stage 4 */
     strerr_warn2(INFO, "sending KILL signal to all processes...", 0);
     kill(-1, SIGKILL);
 

@@ -32,6 +32,7 @@ f none usr/share/man/man8/runsvdir.8.gz 0644 root wheel
 f none usr/share/man/man8/chpst.8.gz 0644 root wheel
 d none etc 0755 root wheel
 d none etc/runit 0755 root wheel
+f none etc/runit/4 0755 root wheel
 f none etc/runit/3 0755 root wheel
 f none etc/runit/2 0755 root wheel
 f none etc/runit/ctrlaltdel 0755 root wheel

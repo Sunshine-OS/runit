@@ -1,15 +1,5 @@
 #!/bin/sh
-exec 2>&1
+PATH=/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-
-echo 'Waiting for services to stop...'
-sv -w196 force-stop /service/*
-sv exit /service/*
-
-echo 'Shutdown...'
-if test -x /etc/runit/reboot; then
-  exec reboot
-else
-  exec halt -p
-fi
+exec env - PATH=$PATH \
+runsvdir -P /service 'log: ...........................................................................................................................................................................................................................................................................................................................................................................................................'
