@@ -81,7 +81,7 @@ void runsv(int no, char *name)
         /* child */
         const char *prog[3];
 
-        prog[0] ="runsv";
+        prog[0] ="/sbin/runsv";
         prog[1] =name;
         prog[2] =0;
         sig_uncatch(sig_hangup);
