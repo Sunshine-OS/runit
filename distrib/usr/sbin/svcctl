@@ -14,12 +14,8 @@ find_service()
 	if [ "x$location" != "x" ];then
 		echo $location
 	else
-		if [ -d "$svdir/../sv/$service" ];then
-			echo "$svdir/../sv/$service"
-		elif [ -d "$svdir/../Service/$service" ];then
-			echo "$svdir/../Service/$service"
-		elif [ -d "$svdir/../Services/$service" ];then
-			echo "$svdir/../Services/$service"
+		if [ -d "$svdir/$service" ];then
+			echo "$svdir/$service"
 		elif [ "$svdir" != "/etc/sv/$service" -a -d "/etc/sv/$service" ];then
 			echo "/etc/sv/$service"
 		else
@@ -103,11 +99,11 @@ case "$command" in
 
 	disable) disable $parameter;;
 
-	start) /sbin/sv u $(find_service $parameter);;
+	start) /sbin/sv start $(find_service $parameter);;
 
-	restart) /sbin/sv t $(find_service $parameter);;
+	restart) /sbin/sv restart $(find_service $parameter);;
 
-	stop) /sbin/sv d $(find_service $parameter);;
+	stop) /sbin/sv stop $(find_service $parameter);;
 
 	find|sv-find) find_service $parameter;;
 

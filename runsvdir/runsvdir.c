@@ -303,7 +303,8 @@ int main(int argc, char **argv)
                 taia_uint(&deadline, 900);
                 taia_add(&stamplog, &now, &deadline);
             }
-        taia_uint(&deadline, check ? 1 : 5);
+        /* half a second */
+		deadline.sec.x =0; deadline.nano =500000000UL; deadline.atto =0;
         taia_add(&deadline, &now, &deadline);
 
         sig_block(sig_child);
@@ -330,7 +331,7 @@ int main(int argc, char **argv)
             for (i =0; i < svnum; i++) if (sv[i].pid) kill(sv[i].pid, SIGTERM);
             _exit(111);
         }
-    }
+    } /* for (;;) */
     /* not reached */
     _exit(0);
 }

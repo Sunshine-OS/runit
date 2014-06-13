@@ -39,6 +39,7 @@ GenIFSpecificSvc()
 
 	cp -r /lib/svc/network/$svc /run/svc/sysinit/$nsvc
 	echo "ifn=${_if}" >> /run/svc/sysinit/$nsvc/svc.conf
+	sleep 0.5 #time for runsvdir to pick it up
 }
 
 #

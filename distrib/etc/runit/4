@@ -7,6 +7,9 @@ echo 'Waiting for services to stop...'
 sv -w196 force-stop /service/*
 sv exit /service/*
 
+sv -w196 force-stop /run/svc/sysinit/*
+sv exit /run/svc/sysinit/*
+
 echo 'Shutdown...'
 if test -x /etc/runit/reboot; then
   exec reboot
