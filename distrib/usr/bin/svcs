@@ -6,5 +6,6 @@ for i in /service/* /run/svc/sysinit/*
 do
 	/sbin/sv status $i >> /tmp/output
 done
-cat /tmp/output | column -t
+cat /tmp/output | sed 's|/run/svc/sysinit/|sysinit:/|' | \
+sed 's|/service/|svc:/|' | column -t
 rm -f /tmp/output

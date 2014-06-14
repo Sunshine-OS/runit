@@ -304,7 +304,9 @@ int main(int argc, char **argv)
                 taia_add(&stamplog, &now, &deadline);
             }
         /* half a second */
-		deadline.sec.x =0; deadline.nano =500000000UL; deadline.atto =0;
+        deadline.sec.x =0;
+        deadline.nano =500000000UL;
+        deadline.atto =0;
         taia_add(&deadline, &now, &deadline);
 
         sig_block(sig_child);

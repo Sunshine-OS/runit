@@ -2,8 +2,8 @@
 
 set -e
 CHOWN=/usr/sbin/chown
-CHPST=/sbin/chpst
-SVLOGD=/sbin/svlogd
+CHPST=/libexec/svc/chpst
+SVLOGD=/libexec/svc/svlogd
 
 if [ $0 != "./run" ];then
 echo "This script meant to be linked as ./run in a service/log directory only!"

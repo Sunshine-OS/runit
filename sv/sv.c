@@ -213,7 +213,7 @@ unsigned int svstatus_print(char *m)
                fmt_ulong(sulong, tnow.sec.x < tstatus.x ? 0 : tnow.sec.x -tstatus.x));
     outs("s\t");
     outs(m);
-    outs(": ");
+    outs(" ");
 
     if (svstatus[19])
     {
@@ -260,7 +260,7 @@ int status(char *unused)
     {
         char svclog[1024];
         strcpy(svclog, *service);
-        strcat(svclog, ":log");
+        strcat(svclog, "/log");
         outs("\n");
         svstatus_print(svclog);
     }

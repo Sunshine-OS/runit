@@ -1,18 +1,12 @@
 i pkginfo
 i preinstall
 d none sbin 0755 root wheel
-f none sbin/chpst 0555 root wheel
-f none sbin/fghack 0555 root wheel
 f none sbin/sv 0555 root wheel
-f none sbin/svwaitdone 0555 root wheel
 f none sbin/telinit 0555 root wheel
 f none sbin/runsvdir 0555 root wheel
-f none sbin/svlogd 0555 root wheel
 f none sbin/runit 0555 root wheel
 f none sbin/runsvchdir 0555 root wheel
-f none sbin/utmpset 0555 root wheel
 f none sbin/runsv 0555 root wheel
-f none sbin/rsvlog 0555 root wheel
 d none usr 0755 root wheel
 d none usr/bin 0755 root wheel
 f none usr/bin/svcs 0555 root wheel
@@ -45,7 +39,7 @@ d none etc/sv/amd 0755 root wheel
 f none etc/sv/amd/run 0755 root wheel
 f none etc/sv/amd/svc.conf 0644 root wheel
 d none etc/sv/amd/log 0755 root wheel
-s none etc/sv/amd/log/run=/sbin/rsvlog
+s none etc/sv/amd/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/casperd 0755 root wheel
 f none etc/sv/casperd/run 0755 root wheel
@@ -56,13 +50,13 @@ f none etc/sv/cron/finish 0755 root wheel
 d none etc/sv/cron/control 0755 root wheel
 f none etc/sv/cron/control/d 0755 root wheel
 d none etc/sv/cron/log 0755 root wheel
-s none etc/sv/cron/log/run=/sbin/rsvlog
+s none etc/sv/cron/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/dbus 0755 root wheel
 f none etc/sv/dbus/run 0755 root wheel
 f none etc/sv/dbus/svc.conf 0644 root wheel
 d none etc/sv/dbus/log 0755 root wheel
-s none etc/sv/dbus/log/run=/sbin/rsvlog
+s none etc/sv/dbus/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/getty-1 0755 root wheel
 f none etc/sv/getty-1/run 0755 root wheel
@@ -81,28 +75,28 @@ d none etc/sv/hald 0755 root wheel
 f none etc/sv/hald/run 0755 root wheel
 f none etc/sv/hald/svc.conf 0644 root wheel
 d none etc/sv/hald/log 0755 root wheel
-s none etc/sv/hald/log/run=/sbin/rsvlog
+s none etc/sv/hald/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/rpcbind 0755 root wheel
 f none etc/sv/rpcbind/run 0755 root wheel
 f none etc/sv/rpcbind/finish 0755 root wheel
 d none etc/sv/rpcbind/log 0755 root wheel
-s none etc/sv/rpcbind/log/run=/sbin/rsvlog
+s none etc/sv/rpcbind/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/rpc.lockd 0755 root wheel
 f none etc/sv/rpc.lockd/run 0755 root wheel
 d none etc/sv/rpc.lockd/log 0755 root wheel
-s none etc/sv/rpc.lockd/log/run=/sbin/rsvlog
+s none etc/sv/rpc.lockd/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/rpc.statd 0755 root wheel
 f none etc/sv/rpc.statd/run 0755 root wheel
 d none etc/sv/rpc.statd/log 0755 root wheel
-s none etc/sv/rpc.statd/log/run=/sbin/rsvlog
+s none etc/sv/rpc.statd/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/moused 0755 root wheel
 f none etc/sv/moused/run 0755 root wheel
 d none etc/sv/moused/log 0755 root wheel
-s none etc/sv/moused/log/run=/sbin/rsvlog
+s none etc/sv/moused/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/ntpd 0755 root wheel
 f none etc/sv/ntpd/run 0755 root wheel
@@ -111,13 +105,13 @@ d none etc/sv/powerd 0755 root wheel
 f none etc/sv/powerd/run 0755 root wheel   
 f none etc/sv/powerd/finish 0755 root wheel
 d none etc/sv/powerd/log 0755 root wheel 
-s none etc/sv/powerd/log/run=/sbin/rsvlog
+s none etc/sv/powerd/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/sshd 0755 root wheel
 f none etc/sv/sshd/run 0755 root wheel
 f none etc/sv/sshd/finish 0755 root wheel
 d none etc/sv/sshd/log 0755 root wheel
-s none etc/sv/sshd/log/run=/sbin/rsvlog
+s none etc/sv/sshd/log/run=/libexec/svc/rsvlog
 
 d none etc/sv/sm.submit 0755 root wheel   
 f none etc/sv/sm.submit/run 0755 root wheel
@@ -138,13 +132,22 @@ d none lib/svc/network/wpa_supplicant 0755 root wheel
 f none lib/svc/network/wpa_supplicant/run 0755 root wheel
 f none lib/svc/network/wpa_supplicant/svc.conf 0644 root wheel
 d none lib/svc/network/wpa_supplicant/log 0755 root wheel
-s none lib/svc/network/wpa_supplicant/log/run=/sbin/rsvlog
+s none lib/svc/network/wpa_supplicant/log/run=/libexec/svc/rsvlog
 
 d none lib/svc/network/dhclient 0755 root wheel
 f none lib/svc/network/dhclient/run 0755 root wheel
 f none lib/svc/network/dhclient/svc.conf 0644 root wheel
 d none lib/svc/network/dhclient/log 0755 root wheel
-s none lib/svc/network/dhclient/log/run=/sbin/rsvlog
+s none lib/svc/network/dhclient/log/run=/libexec/svc/rsvlog
+
+d none libexec 0755 root wheel
+d none libexec/svc 0755 root wheel
+f none libexec/svc/chpst 0555 root wheel
+f none libexec/svc/fghack 0555 root wheel
+f none libexec/svc/svwaitdone 0555 root wheel
+f none libexec/svc/svlogd 0555 root wheel
+f none libexec/svc/utmpset 0555 root wheel
+f none libexec/svc/rsvlog 0555 root wheel
 
 d none etc/sv/sysctl 0755 root wheel
 f none etc/sv/sysctl/oneshot 0644 root wheel
@@ -179,6 +182,7 @@ f none etc/sv/netif/netif.subr 0644 root wheel
 
 d none service 0755 root wheel
 s none service/amd=/etc/sv/amd
+s none service/casperd=/etc/sv/casperd
 s none service/cron=/etc/sv/cron
 s none service/getty-3=/etc/sv/getty-3
 s none service/getty-4=/etc/sv/getty-4

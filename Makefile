@@ -8,8 +8,6 @@ SUBDIR=libbyte \
 		pid1 \
 		sv \
 		telinit \
-		svlogd \
-		chpst \
 		runsvchdir \
 		utils
 

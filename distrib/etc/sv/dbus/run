@@ -8,4 +8,4 @@ exec 2>&1
 
 chown messagebus:messagebus /var/run/dbus
 
-exec chpst -u messagebus /usr/local/bin/dbus-daemon --nofork $flags
+exec /libexec/svc/chpst -u messagebus /usr/local/bin/dbus-daemon --nofork $flags

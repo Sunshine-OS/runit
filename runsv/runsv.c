@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
@@ -101,6 +102,64 @@ void warn2(char *m1, char *m2)
 void warnx(char *m1, char *m2, char *m3)
 {
     strerr_warn6("runsv ", dir, ": warning: ", m1, m2, m3, 0);
+}
+
+static inline
+const char *
+classify_signal (
+    int signo
+)
+{
+    switch (signo)
+    {
+    case SIGKILL:
+        return "kill";
+    case SIGTERM:
+    case SIGINT:
+    case SIGHUP:
+    case SIGPIPE:
+        return "term";
+    case SIGABRT:
+    case SIGALRM:
+    case SIGQUIT:
+        return "abort";
+    default:
+        return "crash";
+    }
+}
+
+static inline
+const char *
+signame (
+    int signo,
+    char snbuf[16]
+)
+{
+    switch (signo)
+    {
+    case SIGKILL:
+        return "KILL";
+    case SIGTERM:
+        return "TERM";
+    case SIGINT:
+        return "INT";
+    case SIGHUP:
+        return "HUP";
+    case SIGPIPE:
+        return "PIPE";
+    case SIGABRT:
+        return "ABRT";
+    case SIGALRM:
+        return "ALRM";
+    case SIGQUIT:
+        return "QUIT";
+    case SIGSEGV:
+        return "SEGV";
+    case SIGFPE:
+        return "FPE";
+    }
+    snprintf(snbuf, 16, "%u", signo);
+    return snbuf;
 }
 
 void stopservice(struct svdir *);
@@ -366,15 +425,23 @@ void startservice(struct svdir *s)
     if (s->state == S_FINISH)
     {
         run[0] ="./finish";
-        code[fmt_ulong(code, wait_exitcode(s->wstat))] =0;
-        run[1] =wait_crashed(s->wstat) ? "-1" : code; /* first arg */
-        stat[fmt_ulong(stat, s->wstat & 0xff)] =0;
-        run[2] =stat;
-        spid[fmt_ulong(spid, (unsigned long)s->oldpid)] =0; /* old PID */
-        run[3] =spid;
-        spid[fmt_ulong(want, (unsigned long)s->want)] =0;
-        run[4] =want;
-        run[5] =0;
+
+        char snbuf[16];
+        if (WIFSIGNALED(s->wstat))
+        {
+            const int signo =WTERMSIG(s->wstat);
+            run[1] =classify_signal(signo);
+            run[2] =signame(signo, snbuf);
+            run[3] =0;
+        }
+        else
+        {
+            const int code  =WEXITSTATUS(s->wstat);
+            run[1] ="exit";
+            snprintf(snbuf, 16, "%u", code);
+            run[2] =snbuf;
+            run[3] =0;
+        }
     }
     else
     {
