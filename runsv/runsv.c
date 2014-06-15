@@ -33,6 +33,7 @@ int selfpipe[2];
 #define S_RUN 1
 #define S_FINISH 2
 #define S_DONE 3
+#define S_STARTING 4
 /* ctrl */
 #define C_NOOP 0
 #define C_TERM 1
@@ -320,13 +321,14 @@ unsigned int custom(struct svdir *s, char c)
 {
     int pid;
     int w;
-    char a[10];
+    char a[10] ="./start";
     struct stat st;
     char *prog[2];
 
     if (s->islog) return(0);
-    byte_copy(a, 10, "control/?");
-    a[8] =c;
+	if (c != 's')
+    	byte_copy(a, 10, "control/?"); a[8] =c;
+		
     if (stat(a, &st) == 0)
     {
         if (st.st_mode & S_IXUSR)
@@ -445,8 +447,10 @@ void startservice(struct svdir *s)
     }
     else
     {
+		int oldstate =s->state;
         run[0] ="./run";
         custom(s, 'u');
+		if (firstrun) s->state =S_STARTING; custom(s, 's'); s->state =oldstate;
         firstrun[fmt_ulong(firstrun, (unsigned long)s->firstrun)] =0;
         run[1] =firstrun;
         run[2] =0;

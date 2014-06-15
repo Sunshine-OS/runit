@@ -21,6 +21,7 @@ package: all
 	mkdir -p proto
 	cp -r distrib/* proto/
 	mkdir -p proto/usr/share/man/man8
+	mkdir -p proto/sbin
 	fakeroot make install DESTDIR=${PWD}/proto
 	sh packageit
 
