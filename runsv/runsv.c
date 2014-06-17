@@ -49,6 +49,7 @@ struct svdir
     int pid;
     int oldpid;
     int firstrun;
+	int oneshot;
     int state;
     int ctrl;
     int want;
@@ -326,7 +327,11 @@ unsigned int custom(struct svdir *s, char c)
     char *prog[2];
 
     if (s->islog) return(0);
-	if (c != 's')
+	if (c == 's')
+		byte_copy(a, 8, "./start");
+	else if (c == 'd')
+		byte_copy(a, 7, "./stop");
+	else
     	byte_copy(a, 10, "control/?"); a[8] =c;
 		
     if (stat(a, &st) == 0)
@@ -521,8 +526,9 @@ int ctrl(struct svdir *s, char c)
     case 'd': /* down */
         s->want =W_DOWN;
         update_status(s);
-        if (s->state == S_RUN) stopservice(s);
-        if (s->state == S_DONE) stoponeshotservice(s);
+        if (s->state == S_RUN && !s->oneshot) stopservice(s);
+		else if ((s->state ==S_RUN && s->oneshot) ||
+		  s->state == S_DONE) stoponeshotservice(s);
         break;
     case 'u': /* up */
         s->want =W_UP;
@@ -541,8 +547,9 @@ int ctrl(struct svdir *s, char c)
         if (s->islog) break;
         s->want =W_EXIT;
         update_status(s);
-        if (s->state == S_RUN) stopservice(s);
-        if (s->state == S_DONE) stoponeshotservice(s);
+        if (s->state == S_RUN && !s->oneshot) stopservice(s);
+		else if ((s->state ==S_RUN && s->oneshot) ||
+		  s->state == S_DONE) stoponeshotservice(s);
         break;
     case 't': /* sig term */
         if (s->state == S_RUN) stopservice(s);
@@ -624,6 +631,7 @@ int main(int argc, char **argv)
     svd[1].pid =0;
     taia_now(&svd[0].start);
     if (stat("noauto", &s) != -1) svd[0].want =W_DOWN;
+	if (stat("oneshot", &s) != -1) svd[0].oneshot =1;
 
     if (stat("log", &s) == -1)
     {

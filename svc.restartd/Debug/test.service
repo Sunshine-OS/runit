@@ -1,4 +1,5 @@
-## **************************************************************************
+### 
+**************************************************************************
 ## For copyright and licensing terms, see the file named COPYING.
 ## **************************************************************************
 
@@ -6,9 +7,13 @@
 Description=Testing service
 
 [Service]
-Type=Simple
+Type=Forking
 #SessionLeader=true
+ExecStartPre=echo "Hello, world!"
 ExecStart=/usr/sbin/cron
+#ExecStart=echo "No No No"
+ExecStartPost=echo "World, hello!"
+ExecStopPost=echo "ExecStopPost speaking"
 PIDFile=/var/run/cron.pid
 Restart=Always
 RestartSec=3
